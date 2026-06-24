@@ -28,6 +28,14 @@ resource "proxmox_virtual_environment_container" "this" {
 
       hostname = initialization.value.hostname
 
+      dynamic "user_account" {
+        for_each = try([initialization.value.user_account], [])
+
+        content {
+          password = user_account.value.password
+        }
+      }
+
       dynamic "ip_config" {
         for_each = try([initialization.value.ip_config], [])
         content {
@@ -36,8 +44,8 @@ resource "proxmox_virtual_environment_container" "this" {
             for_each = try([ip_config.value.ipv4], [])
 
             content {
-              address = try(ipv4.value.address, null)
-              gateway = try(ipv4.value.gateway, null)
+              address = ipv4.value.address
+              gateway = ipv4.value.gateway
             }
           }
         }
@@ -58,6 +66,7 @@ resource "proxmox_virtual_environment_container" "this" {
     for_each = [var.operating_system]
     content {
       template_file_id = operating_system.value.template_file_id
+      type = operating_system.value.type
     }
   }
 
@@ -66,6 +75,15 @@ resource "proxmox_virtual_environment_container" "this" {
     content {
       dedicated = memory.value.dedicated
       swap = memory.value.swap
+    }
+  }
+
+  dynamic "network_interface" {
+    for_each = [var.network_interface]
+
+    content {
+      name = network_interface.value.name
+      bridge = network_interface.value.bridge
     }
   }
 

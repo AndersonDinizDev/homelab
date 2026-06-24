@@ -24,14 +24,15 @@ provider "proxmox" {
 module "proxmox_lxc" {
   for_each = local.containers
 
-  source           = "../../modules/proxmox_lxc"
-  node_name        = each.value.node_name
-  description      = each.value.description
-  vm_id            = each.value.vm_id
-  unprivileged     = each.value.unprivileged
-  disk             = each.value.disk
-  features         = each.value.features
-  initialization   = each.value.initialization
-  memory           = each.value.memory
-  operating_system = each.value.operating_system
+  source            = "../../modules/proxmox_lxc"
+  node_name         = each.value.node_name
+  description       = each.value.description
+  vm_id             = each.value.vm_id
+  unprivileged      = each.value.unprivileged
+  disk              = each.value.disk
+  features          = each.value.features
+  initialization    = each.value.initialization
+  memory            = each.value.memory
+  operating_system  = each.value.operating_system
+  network_interface = each.value.network_interface
 }

@@ -16,17 +16,25 @@ locals {
             gateway = "192.168.100.1"
           }
         }
+        user_account = {
+          password = var.user_password
+        }
       }
       disk = {
-        size = 6
+        size         = 6
         datastore_id = "local-lvm"
       }
       operating_system = {
         template_file_id = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
+        type = "debian"
       }
       memory = {
         dedicated = 1024
         swap      = 1024
+      }
+      network_interface = {
+        name   = "eth0"
+        bridge = "vmbr0"
       }
     }
   }

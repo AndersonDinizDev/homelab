@@ -1,10 +1,15 @@
 variable "api_token" {
   type        = string
   sensitive   = true
-  description = "token proxmox"
+  description = "Token de api do proxmox"
 }
 
 variable "endpoint" {
   type        = string
-  description = "endpoint proxmox"
+  description = "Endpoint de requisição"
+}
+
+variable "user_password" {
+  type = string
+  description = "Senha do usuário root"
 }
