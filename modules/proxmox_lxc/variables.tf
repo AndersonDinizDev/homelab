@@ -1,34 +1,39 @@
 variable "node_name" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Nome do nó do cluster"
 }
 
 variable "vm_id" {
-  type = number
-  default = 1
+  type        = number
+  default     = 1
   description = "Id da LXC"
 }
 
 variable "description" {
-  type = string
-  default = ""
+  type        = string
+  default     = ""
   description = "Descrição da LXC"
 }
 
 variable "unprivileged" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "Configuração de privilégio"
 }
 
 variable "features" {
-  type = any
   default = {}
+
+  type = object({
+    nesting = optional(bool, true)
+  })
+
+  description = "Configuração de recursos"
 }
 
 variable "initialization" {
-  description = "Configurações de inicialização"
+  description = "Configuração de inicialização"
 
   default = {}
 
@@ -50,27 +55,27 @@ variable "initialization" {
 }
 
 variable "disk" {
-  description = "Configurações de disco"
+  description = "Configuração de disco"
 
   default = {}
 
   type = object({
-    size = optional(number)
+    size         = optional(number)
     datastore_id = optional(string, "local-lvm")
   })
 }
 
 variable "operating_system" {
-description = "Configurações do sistema operacional"
+  description = "Configuração do sistema operacional"
 
   type = object({
     template_file_id = string
-    type = optional(string, "debian")
+    type             = optional(string, "debian")
   })
 }
 
 variable "memory" {
-  description = "Configurações de memória ram"
+  description = "Configuração de memória ram"
 
   default = {}
 
@@ -81,11 +86,11 @@ variable "memory" {
 }
 
 variable "network_interface" {
-description = "Configurações de rede"
+  description = "Configuração de rede"
 
   type = object({
-    name = string
-    bridge      = optional(string, "vmbr0")
+    name   = string
+    bridge = optional(string, "vmbr0")
   })
 }
 

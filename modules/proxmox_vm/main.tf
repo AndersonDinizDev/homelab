@@ -6,27 +6,35 @@ terraform {
     }
   }
 }
-resource "proxmox_virtual_environment_container" "this" {
+
+resource "proxmox_virtual_environment_vm" "this" {
   node_name   = var.node_name
   description = var.description
 
   vm_id = var.vm_id
 
-  unprivileged = var.unprivileged
+  tags = var.tags
 
-
-  dynamic "features" {
-    for_each = var.features != null ? [var.features] : []
+  dynamic "agent" {
+    for_each = var.agent != null ? [var.agent] : []
     content {
-      nesting = features.value.nesting
+      enabled = agent.value.enabled
+    }
+  }
+
+  stop_on_destroy = var.stop_on_destroy
+
+  dynamic "cpu" {
+    for_each = var.cpu != null ? [var.cpu] : []
+    content {
+      cores = cpu.value.cores
+      type  = cpu.value.type
     }
   }
 
   dynamic "initialization" {
     for_each = var.initialization != null ? [var.initialization] : []
     content {
-
-      hostname = initialization.value.hostname
 
       dynamic "user_account" {
         for_each = initialization.value.user_account != null ? [initialization.value.user_account] : []
@@ -53,37 +61,43 @@ resource "proxmox_virtual_environment_container" "this" {
     }
   }
 
+  dynamic "operating_system" {
+    for_each = var.operating_system != null ? [var.operating_system] : []
+    content {
+      type = operating_system.value.type
+    }
+  }
+
   dynamic "disk" {
     for_each = [var.disk]
     content {
       size         = disk.value.size
       datastore_id = disk.value.datastore_id
+      interface    = disk.value.interface
+      file_id = disk.value.file_id
     }
   }
 
-
-  dynamic "operating_system" {
-    for_each = [var.operating_system]
-    content {
-      template_file_id = operating_system.value.template_file_id
-      type             = operating_system.value.type
-    }
-  }
 
   dynamic "memory" {
     for_each = var.memory != null ? [var.memory] : []
     content {
       dedicated = memory.value.dedicated
-      swap      = memory.value.swap
     }
   }
 
-  dynamic "network_interface" {
-    for_each = try(length(var.network_interface), 0) > 0 ? [var.network_interface] : []
+  dynamic "network_device" {
+    for_each = try(length(var.network_device), 0) > 0 ? [var.network_device] : []
 
     content {
-      name   = network_interface.value.name
-      bridge = network_interface.value.bridge
+      bridge = network_device.value.bridge
+    }
+  }
+
+  dynamic "cdrom" {
+    for_each = var.cdrom != null ? [var.cdrom] : []
+    content {
+      file_id = cdrom.value.file_id
     }
   }
 

@@ -22,17 +22,36 @@ provider "proxmox" {
 }
 
 module "proxmox_lxc" {
-  for_each = local.containers
+  for_each = local.container
 
   source            = "../../modules/proxmox_lxc"
   node_name         = each.value.node_name
-  description       = each.value.description
+  description       = try(each.value.description, null)
   vm_id             = each.value.vm_id
   unprivileged      = each.value.unprivileged
   disk              = each.value.disk
-  features          = each.value.features
-  initialization    = each.value.initialization
-  memory            = each.value.memory
+  features          = try(each.value.features, null)
+  initialization    = try(each.value.initialization, {})
+  memory            = try(each.value.memory, null)
   operating_system  = each.value.operating_system
-  network_interface = each.value.network_interface
+  network_interface = try(each.value.network_interface, null)
+}
+
+module "proxmox_vm" {
+  for_each = local.vm
+  source   = "../../modules/proxmox_vm"
+
+  node_name        = each.value.node_name
+  description      = try(each.value.description, null)
+  vm_id            = each.value.vm_id
+  tags             = try(each.value.tags, null)
+  agent            = try(each.value.agent, null)
+  stop_on_destroy  = each.value.stop_on_destroy
+  cpu              = try(each.value.cpu, null)
+  initialization   = try(each.value.initialization, {})
+  memory           = try(each.value.memory, null)
+  operating_system = each.value.operating_system
+  network_device   = try(each.value.network_interface, null)
+  disk             = each.value.disk
+  cdrom            = try(each.value.cdrom, null)
 }

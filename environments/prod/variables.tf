@@ -10,6 +10,6 @@ variable "endpoint" {
 }
 
 variable "user_password" {
-  type = string
+  type        = string
   description = "Senha do usuário root"
 }
