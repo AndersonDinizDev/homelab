@@ -84,6 +84,7 @@ resource "proxmox_virtual_environment_container" "this" {
     content {
       name   = network_interface.value.name
       bridge = network_interface.value.bridge
+      firewall = network_interface.value.firewall
     }
   }
 

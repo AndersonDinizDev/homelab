@@ -1,5 +1,9 @@
 locals {
   alias = {
+    gateway = {
+      name = "gateway"
+      cidr = "192.168.100.1"
+    }
     pve_1 = {
       name = "pve_1"
       cidr = "192.168.100.11"
@@ -22,7 +26,7 @@ locals {
     }
     vaultwarden = {
       name = "vaultwarden"
-      cidr = "192.168.100.13"
+      cidr = "192.168.100.12"
     }
   }
 }

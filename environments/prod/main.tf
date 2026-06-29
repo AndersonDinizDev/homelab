@@ -35,6 +35,8 @@ module "proxmox_lxc" {
   memory            = try(each.value.memory, null)
   operating_system  = each.value.operating_system
   network_interface = try(each.value.network_interface, null)
+
+  depends_on = [module.firewall_alias]
 }
 
 module "proxmox_vm" {
@@ -54,6 +56,8 @@ module "proxmox_vm" {
   network_device   = try(each.value.network_interface, null)
   disk             = each.value.disk
   cdrom            = try(each.value.cdrom, null)
+
+  depends_on = [module.firewall_alias]
 }
 
 module "firewall_alias" {

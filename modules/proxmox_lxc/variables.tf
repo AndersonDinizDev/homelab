@@ -91,6 +91,7 @@ variable "network_interface" {
   type = object({
     name   = string
     bridge = optional(string, "vmbr0")
+    firewall = optional(bool, false)
   })
 }
 

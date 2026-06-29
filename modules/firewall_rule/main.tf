@@ -18,7 +18,7 @@ resource "proxmox_virtual_environment_firewall_rules" "this" {
     content {
       action = rule.value.action
       type = rule.value.type
-      comment = rule.value.type
+      comment = rule.value.comment
       dest = rule.value.dest
       dport = rule.value.dport
       enabled = rule.value.enabled
