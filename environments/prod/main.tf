@@ -55,3 +55,33 @@ module "proxmox_vm" {
   disk             = each.value.disk
   cdrom            = try(each.value.cdrom, null)
 }
+
+module "firewall_alias" {
+
+  for_each = local.alias
+
+  source = "../../modules/firewall_alias"
+
+  name         = each.value.name
+  node_name    = try(each.value.node_name, null)
+  vm_id        = try(each.value.vm_id, null)
+  container_id = try(each.value.container_id, null)
+  comment      = try(each.value.container_id, null)
+  cidr         = each.value.cidr
+}
+
+module "firewall_ipset" {
+
+  for_each = local.ipset
+
+  source = "../../modules/firewall_ipset"
+
+  name         = each.value.name
+  node_name    = try(each.value.node_name, null)
+  vm_id        = try(each.value.vm_id, null)
+  container_id = try(each.value.container_id, null)
+  comment      = try(each.value.container_id, null)
+  cidr         = each.value.cidr
+
+  depends_on = [module.firewall_alias]
+}
