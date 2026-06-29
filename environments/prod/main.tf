@@ -27,6 +27,7 @@ module "proxmox_lxc" {
   source            = "../../modules/proxmox_lxc"
   node_name         = each.value.node_name
   description       = try(each.value.description, null)
+  tags              = try(each.value.tags, null)
   vm_id             = each.value.vm_id
   unprivileged      = each.value.unprivileged
   disk              = each.value.disk

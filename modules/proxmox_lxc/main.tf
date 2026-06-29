@@ -14,6 +14,7 @@ resource "proxmox_virtual_environment_container" "this" {
 
   unprivileged = var.unprivileged
 
+  tags = var.tags
 
   dynamic "features" {
     for_each = var.features != null ? [var.features] : []

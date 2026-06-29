@@ -85,6 +85,13 @@ variable "memory" {
   })
 }
 
+variable "tags" {
+  description = "Tags da LXC"
+
+  type    = list(string)
+  default = []
+}
+
 variable "network_interface" {
   description = "Configuração de rede"
 

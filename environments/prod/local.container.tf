@@ -7,6 +7,7 @@ locals {
       features = {
         nesting = true
       }
+      tags = ["terraform", "debian", "vaultwarden"]
       initialization = {
         hostname = "vaultwarden"
         ip_config = {
