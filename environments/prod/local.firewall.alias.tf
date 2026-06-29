@@ -16,6 +16,10 @@ locals {
       name = "my_phone"
       cidr = "192.168.100.102"
     }
+    caddy_proxy = {
+      name = "caddy_proxy"
+      cidr = "192.168.100.1"
+    }
     vaultwarden = {
       name = "vaultwarden"
       cidr = "192.168.100.13"

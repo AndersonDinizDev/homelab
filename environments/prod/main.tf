@@ -85,3 +85,40 @@ module "firewall_ipset" {
 
   depends_on = [module.firewall_alias]
 }
+
+module "firewall_rules" {
+
+  for_each = local.rule
+
+  source = "../../modules/firewall_rule"
+
+  container_id = try(each.value.container_id, null)
+  node_name    = try(each.value.node_name, null)
+  vm_id        = try(each.value.vm_id, null)
+  rule         = each.value.rules
+
+  depends_on = [module.firewall_alias, module.firewall_ipset, module.proxmox_lxc, module.proxmox_vm]
+}
+
+module "firewall_options" {
+
+  for_each = local.options
+
+  source = "../../modules/firewall_options"
+
+  container_id  = try(each.value.container_id, null)
+  dhcp          = try(each.value.dhcp, null)
+  log_level_in  = try(each.value.log_level_in, null)
+  log_level_out = try(each.value.log_level_out, null)
+  node_name     = try(each.value.node_name, null)
+  radv          = try(each.value.radv, null)
+  vm_id         = try(each.value.vm_id, null)
+  macfilter     = try(each.value.macfilter, null)
+  ipfilter      = try(each.value.ipfilter, null)
+  ndp           = try(each.value.ndp, null)
+  enabled       = try(each.value.enabled, null)
+  input_policy  = try(each.value.input_policy, null)
+  output_policy = try(each.value.output_policy, null)
+
+  depends_on = [module.proxmox_lxc, module.proxmox_vm]
+}
