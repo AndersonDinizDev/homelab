@@ -43,7 +43,7 @@ locals {
     },
     pve1_101 = {
       node_name    = "pve1"
-      container_id = module.proxmox_lxc["101"].id
+      container_id = module.proxmox_lxc["vaultwarden"].id
       rules = [
         {
           type    = "in"

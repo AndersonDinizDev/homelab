@@ -28,5 +28,13 @@ locals {
       name = "vaultwarden"
       cidr = "192.168.100.12"
     }
+    k3s_master = {
+      name = "k3s_master"
+      cidr = "192.168.100.13"
+    }
+    k3s_worker_1 = {
+      name = "k3s_worker_1"
+      cidr = "192.168.100.33"
+    }
   }
 }
