@@ -66,6 +66,9 @@ locals {
         template_file_id = "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst"
         type             = "debian"
       }
+      cpu = {
+        cores = 2
+      }
       memory = {
         dedicated = 4096
         swap      = 4096
@@ -103,6 +106,9 @@ locals {
       operating_system = {
         template_file_id = "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst"
         type             = "debian"
+      }
+      cpu = {
+        cores = 1
       }
       memory = {
         dedicated = 2048

@@ -74,6 +74,18 @@ variable "operating_system" {
   })
 }
 
+variable "cpu" {
+  description = "Configuração de cpu"
+
+  default = {}
+
+  type = object({
+
+    cores = optional(number, 1)
+    architecture = optional(string, "amd64")
+  })
+}
+
 variable "memory" {
   description = "Configuração de memória ram"
 

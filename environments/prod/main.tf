@@ -33,6 +33,7 @@ module "proxmox_lxc" {
   disk              = each.value.disk
   features          = try(each.value.features, null)
   initialization    = try(each.value.initialization, {})
+  cpu               = try(each.value.cpu, null)
   memory            = try(each.value.memory, null)
   operating_system  = each.value.operating_system
   network_interface = try(each.value.network_interface, null)

@@ -71,6 +71,14 @@ resource "proxmox_virtual_environment_container" "this" {
     }
   }
 
+  dynamic "cpu" {
+    for_each = var.cpu != null ? [var.cpu] : []
+    content {
+      cores = cpu.value.cores
+      architecture = cpu.value.architecture
+    }
+  }
+
   dynamic "memory" {
     for_each = var.memory != null ? [var.memory] : []
     content {
