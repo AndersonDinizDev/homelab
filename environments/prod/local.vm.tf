@@ -37,7 +37,8 @@ locals {
         swap      = 0
       }
       network_interface = {
-        bridge = "vmbr0"
+        bridge   = "vmbr0"
+        firewall = true
       }
       img = {
         img_url            = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2"
@@ -84,7 +85,8 @@ locals {
         swap      = 0
       }
       network_interface = {
-        bridge = "vmbr0"
+        bridge   = "vmbr0"
+        firewall = true
       }
       img = {
         img_url            = "https://cloud.debian.org/images/cloud/trixie/latest/debian-13-genericcloud-amd64.qcow2"

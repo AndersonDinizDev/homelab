@@ -12,8 +12,8 @@ variable "container_id" {
 
 variable "rule" {
   type = list(object({
-    action = string
-    type = string
+    action = optional(string)
+    type = optional(string)
     comment = optional(string)
     dest = optional(string)
     dport = optional(string)
@@ -24,5 +24,6 @@ variable "rule" {
     proto = optional(string)
     source = optional(string)
     sport = optional(string)
+    security_group = optional(string)
   }))
 }

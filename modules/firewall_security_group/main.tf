@@ -7,28 +7,23 @@ terraform {
   }
 }
 
-resource "proxmox_virtual_environment_firewall_rules" "this" {
-
-  node_name = var.node_name
-  vm_id = var.vm_id
-  container_id = var.container_id
+resource "proxmox_virtual_environment_cluster_firewall_security_group" "this" {
+  name = var.name
+  comment = var.comment
 
   dynamic "rule" {
     for_each = var.rule != null ? var.rule : []
     content {
-      action = rule.value.action
       type = rule.value.type
+      action = rule.value.action
       comment = rule.value.comment
       dest = rule.value.dest
       dport = rule.value.dport
-      enabled = rule.value.enabled
-      iface = rule.value.iface
       log = rule.value.log
+      enabled = rule.value.enabled
       macro = rule.value.macro
-      proto = rule.value.proto
       source = rule.value.source
-      sport = rule.value.sport
-      security_group = rule.value.security_group
     }
   }
+
 }

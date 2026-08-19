@@ -103,9 +103,9 @@ module "firewall_rules" {
   container_id = try(each.value.container_id, null)
   node_name    = try(each.value.node_name, null)
   vm_id        = try(each.value.vm_id, null)
-  rule         = each.value.rules
+  rule         = try(each.value.rules, [])
 
-  depends_on = [module.firewall_alias, module.firewall_ipset, module.proxmox_lxc, module.proxmox_vm]
+  depends_on = [module.firewall_alias, module.firewall_ipset, module.firewall_security_group, module.proxmox_lxc, module.proxmox_vm]
 }
 
 module "firewall_options" {
@@ -129,4 +129,15 @@ module "firewall_options" {
   output_policy = try(each.value.output_policy, null)
 
   depends_on = [module.proxmox_lxc, module.proxmox_vm]
+}
+
+module "firewall_security_group" {
+
+  for_each = local.group
+
+  source = "../../modules/firewall_security_group"
+
+  name   = each.value.name
+  comment = try(each.value.comment, null)
+  rule   = try(each.value.rules, [])
 }

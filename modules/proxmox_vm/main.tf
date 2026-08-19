@@ -99,6 +99,7 @@ resource "proxmox_virtual_environment_vm" "this" {
 
     content {
       bridge = network_device.value.bridge
+      firewall = network_device.value.firewall
     }
   }
 

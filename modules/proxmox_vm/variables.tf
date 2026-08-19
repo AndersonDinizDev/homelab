@@ -115,6 +115,7 @@ variable "network_device" {
 
   type = object({
     bridge = optional(string, "vmbr0")
+    firewall = optional(bool, false)
   })
 }
 
