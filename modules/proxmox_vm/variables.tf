@@ -1,4 +1,10 @@
 
+variable "name" {
+  description = "Nome da VM"
+
+  type    = string
+}
+
 variable "node_name" {
   description = "Nome do nó do cluster"
 
@@ -60,6 +66,7 @@ variable "initialization" {
   type = object({
 
     user_account = optional(object({
+      username = string
       password = string
     }))
 
@@ -81,6 +88,7 @@ variable "disk" {
     datastore_id = optional(string, "local-lvm")
     interface    = string
     file_id = optional(string)
+    import_from = optional(string)
   })
 }
 
@@ -110,12 +118,19 @@ variable "network_device" {
   })
 }
 
-variable "cdrom" {
-  description = "Configuração de CD-ROM"
+variable "img" {
+  description = "Configuração de imagem"
 
   type = object({
-    file_id = optional(string)
+    img_url = string
+    checksum = string
+    checksum_algorithm = string
+    datastore_id = string
   })
+}
+
+variable "ssh_key" {
+  type = string
 }
 
 

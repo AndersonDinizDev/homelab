@@ -13,3 +13,8 @@ variable "user_password" {
   type        = string
   description = "Senha do usuário root"
 }
+
+variable "ssh_key" {
+  type = string
+  description = "Chave ssh pública"
+}

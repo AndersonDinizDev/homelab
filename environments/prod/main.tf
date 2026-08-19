@@ -45,6 +45,7 @@ module "proxmox_vm" {
   for_each = local.vm
   source   = "../../modules/proxmox_vm"
 
+  name             = each.value.name
   node_name        = each.value.node_name
   description      = try(each.value.description, null)
   vm_id            = each.value.vm_id
@@ -57,7 +58,8 @@ module "proxmox_vm" {
   operating_system = each.value.operating_system
   network_device   = try(each.value.network_interface, null)
   disk             = each.value.disk
-  cdrom            = try(each.value.cdrom, null)
+  img              = each.value.img
+  ssh_key = each.value.ssh_key
 
   depends_on = [module.firewall_alias]
 }

@@ -7,9 +7,14 @@ terraform {
   }
 }
 
+data "local_file" "ssh_public_key" {
+  filename = var.ssh_key
+}
+
 resource "proxmox_virtual_environment_vm" "this" {
   node_name   = var.node_name
   description = var.description
+  name = var.name
 
   vm_id = var.vm_id
 
@@ -40,7 +45,9 @@ resource "proxmox_virtual_environment_vm" "this" {
         for_each = initialization.value.user_account != null ? [initialization.value.user_account] : []
 
         content {
+          username = var.name
           password = user_account.value.password
+          keys = [trimspace(data.local_file.ssh_public_key.content)]
         }
       }
 
@@ -75,6 +82,7 @@ resource "proxmox_virtual_environment_vm" "this" {
       datastore_id = disk.value.datastore_id
       interface    = disk.value.interface
       file_id = disk.value.file_id
+      import_from = proxmox_download_file.latest_cloud_img.id
     }
   }
 
@@ -94,11 +102,15 @@ resource "proxmox_virtual_environment_vm" "this" {
     }
   }
 
-  dynamic "cdrom" {
-    for_each = var.cdrom != null ? [var.cdrom] : []
-    content {
-      file_id = cdrom.value.file_id
-    }
-  }
+}
 
+
+resource "proxmox_download_file" "latest_cloud_img" {
+
+  content_type = "import"
+  datastore_id = var.img.datastore_id
+  node_name    = var.node_name
+  url          = var.img.img_url
+  checksum = var.img.checksum
+  checksum_algorithm = var.img.checksum_algorithm
 }
