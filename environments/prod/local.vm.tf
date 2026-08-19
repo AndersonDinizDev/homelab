@@ -1,6 +1,6 @@
 locals {
   vm = {
-    vm_102 = {
+    102 = {
       name            = "k3s-master"
       node_name       = "pve1"
       vm_id           = 102
@@ -48,7 +48,7 @@ locals {
       }
       ssh_key = var.ssh_key
     }
-    vm_103 = {
+    103 = {
       name            = "k3s-worker-1"
       node_name       = "pve2"
       vm_id           = 103

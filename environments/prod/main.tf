@@ -37,6 +37,7 @@ module "proxmox_lxc" {
   memory            = try(each.value.memory, null)
   operating_system  = each.value.operating_system
   network_interface = try(each.value.network_interface, null)
+  ssh_key           = each.value.ssh_key
 
   depends_on = [module.firewall_alias]
 }
@@ -137,7 +138,7 @@ module "firewall_security_group" {
 
   source = "../../modules/firewall_security_group"
 
-  name   = each.value.name
+  name    = each.value.name
   comment = try(each.value.comment, null)
-  rule   = try(each.value.rules, [])
+  rule    = try(each.value.rules, [])
 }

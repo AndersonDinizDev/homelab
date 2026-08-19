@@ -6,6 +6,11 @@ terraform {
     }
   }
 }
+
+data "local_file" "ssh_public_key" {
+  filename = var.ssh_key
+}
+
 resource "proxmox_virtual_environment_container" "this" {
   node_name   = var.node_name
   description = var.description
@@ -34,6 +39,7 @@ resource "proxmox_virtual_environment_container" "this" {
 
         content {
           password = user_account.value.password
+          keys = [trimspace(data.local_file.ssh_public_key.content)]
         }
       }
 

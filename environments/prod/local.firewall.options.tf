@@ -2,7 +2,7 @@ locals {
   options = {
     pve1_101 = {
       node_name     = "pve1"
-      container_id  = module.proxmox_lxc["vaultwarden"].id
+      container_id  = module.proxmox_lxc["101"].id
       dhcp          = true
       ipfilter      = false
       macfilter     = true
@@ -16,7 +16,7 @@ locals {
     }
     pve1_102 = {
       node_name     = "pve1"
-      vm_id         = module.proxmox_vm["vm_102"].id
+      vm_id         = module.proxmox_vm["102"].id
       dhcp          = true
       ipfilter      = false
       macfilter     = true
@@ -30,7 +30,7 @@ locals {
     }
     pve2_103 = {
       node_name     = "pve2"
-      vm_id         = module.proxmox_vm["vm_103"].id
+      vm_id         = module.proxmox_vm["103"].id
       dhcp          = true
       ipfilter      = false
       macfilter     = true

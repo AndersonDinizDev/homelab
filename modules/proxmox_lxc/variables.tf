@@ -114,5 +114,9 @@ variable "network_interface" {
   })
 }
 
+variable "ssh_key" {
+  type = string
+}
+
 
 

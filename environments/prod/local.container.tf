@@ -1,6 +1,6 @@
 locals {
   container = {
-    vaultwarden = {
+    101 = {
       node_name    = "pve1"
       vm_id        = 101
       unprivileged = true
@@ -37,6 +37,7 @@ locals {
         bridge   = "vmbr0"
         firewall = true
       }
+      ssh_key = var.ssh_key
     }
   }
 }

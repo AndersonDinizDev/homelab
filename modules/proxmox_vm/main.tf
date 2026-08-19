@@ -103,8 +103,9 @@ resource "proxmox_virtual_environment_vm" "this" {
     }
   }
 
-}
+  depends_on = [proxmox_download_file.latest_cloud_img]
 
+}
 
 resource "proxmox_download_file" "latest_cloud_img" {
 

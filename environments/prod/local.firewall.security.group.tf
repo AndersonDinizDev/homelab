@@ -1,7 +1,7 @@
 locals {
   group = {
     default = {
-      name = "default-sg"
+      name    = "default-sg"
       comment = "Grupo de segurança padrão"
       rules = [
         {
