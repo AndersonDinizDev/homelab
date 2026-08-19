@@ -59,7 +59,7 @@ module "proxmox_vm" {
   network_device   = try(each.value.network_interface, null)
   disk             = each.value.disk
   img              = each.value.img
-  ssh_key = each.value.ssh_key
+  ssh_key          = each.value.ssh_key
 
   depends_on = [module.firewall_alias]
 }

@@ -15,6 +15,6 @@ variable "user_password" {
 }
 
 variable "ssh_key" {
-  type = string
+  type        = string
   description = "Chave ssh pública"
 }
