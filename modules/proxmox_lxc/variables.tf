@@ -42,6 +42,7 @@ variable "initialization" {
 
     user_account = optional(object({
       password = string
+      keys = string
     }))
 
     ip_config = optional(object({
@@ -112,10 +113,6 @@ variable "network_interface" {
     bridge = optional(string, "vmbr0")
     firewall = optional(bool, false)
   })
-}
-
-variable "ssh_key" {
-  type = string
 }
 
 

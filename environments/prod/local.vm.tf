@@ -19,6 +19,7 @@ locals {
         user_account = {
           username = "k3s-master"
           password = var.user_password
+          keys = trimspace(data.local_file.ssh_public_key.content)
         }
       }
       cpu = {
@@ -46,7 +47,6 @@ locals {
         checksum_algorithm = "sha512"
         datastore_id       = "local"
       }
-      ssh_key = var.ssh_key
     }
     103 = {
       name            = "k3s-worker-1"
@@ -67,6 +67,7 @@ locals {
         user_account = {
           username = "k3s-worker-1"
           password = var.user_password
+          keys = trimspace(data.local_file.ssh_public_key.content)
         }
       }
       cpu = {
@@ -94,7 +95,6 @@ locals {
         checksum_algorithm = "sha512"
         datastore_id       = "local"
       }
-      ssh_key = var.ssh_key
     }
   }
 }

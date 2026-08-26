@@ -21,6 +21,10 @@ provider "proxmox" {
   api_token = var.api_token
 }
 
+data "local_file" "ssh_public_key" {
+  filename = var.ssh_key
+}
+
 module "proxmox_lxc" {
   for_each = local.container
 
@@ -37,7 +41,6 @@ module "proxmox_lxc" {
   memory            = try(each.value.memory, null)
   operating_system  = each.value.operating_system
   network_interface = try(each.value.network_interface, null)
-  ssh_key           = each.value.ssh_key
 
   depends_on = [module.firewall_alias]
 }
@@ -60,7 +63,6 @@ module "proxmox_vm" {
   network_device   = try(each.value.network_interface, null)
   disk             = each.value.disk
   img              = each.value.img
-  ssh_key          = each.value.ssh_key
 
   depends_on = [module.firewall_alias]
 }

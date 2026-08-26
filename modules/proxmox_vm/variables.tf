@@ -68,6 +68,7 @@ variable "initialization" {
     user_account = optional(object({
       username = string
       password = string
+      keys = string
     }))
 
     ip_config = optional(object({
@@ -128,10 +129,6 @@ variable "img" {
     checksum_algorithm = string
     datastore_id = string
   })
-}
-
-variable "ssh_key" {
-  type = string
 }
 
 

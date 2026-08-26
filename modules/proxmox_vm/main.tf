@@ -7,10 +7,6 @@ terraform {
   }
 }
 
-data "local_file" "ssh_public_key" {
-  filename = var.ssh_key
-}
-
 resource "proxmox_virtual_environment_vm" "this" {
   node_name   = var.node_name
   description = var.description
@@ -47,7 +43,7 @@ resource "proxmox_virtual_environment_vm" "this" {
         content {
           username = var.name
           password = user_account.value.password
-          keys = [trimspace(data.local_file.ssh_public_key.content)]
+          keys = [user_account.value.keys]
         }
       }
 
@@ -115,4 +111,5 @@ resource "proxmox_download_file" "latest_cloud_img" {
   url          = var.img.img_url
   checksum = var.img.checksum
   checksum_algorithm = var.img.checksum_algorithm
+  overwrite=false
 }
