@@ -85,16 +85,5 @@ locals {
         }
       ]
     }
-    pve1_100 = {
-      node_name    = "pve1"
-      container_id = module.proxmox_lxc["100"].id
-      rules = [
-        {
-          security_group = module.firewall_security_group["default"].id
-          iface          = "net0"
-          comment        = "Grupo de segurança padrão"
-        }
-      ]
-    }
   }
 }

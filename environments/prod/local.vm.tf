@@ -19,7 +19,7 @@ locals {
         user_account = {
           username = "k3s-master"
           password = var.user_password
-          keys = trimspace(data.local_file.ssh_public_key.content)
+          keys     = trimspace(data.local_file.ssh_public_key.content)
         }
       }
       cpu = {
@@ -67,7 +67,7 @@ locals {
         user_account = {
           username = "k3s-worker-1"
           password = var.user_password
-          keys = trimspace(data.local_file.ssh_public_key.content)
+          keys     = trimspace(data.local_file.ssh_public_key.content)
         }
       }
       cpu = {

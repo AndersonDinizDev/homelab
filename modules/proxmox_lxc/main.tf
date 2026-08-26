@@ -89,6 +89,7 @@ resource "proxmox_virtual_environment_container" "this" {
     }
   }
 
+
   dynamic "network_interface" {
     for_each = try(length(var.network_interface), 0) > 0 ? [var.network_interface] : []
 

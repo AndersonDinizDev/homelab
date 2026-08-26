@@ -36,9 +36,5 @@ locals {
       name = "k3s_worker_1"
       cidr = "192.168.100.33"
     }
-    ollama = {
-      name = "ollama"
-      cidr = "192.168.100.14"
-    }
   }
 }
