@@ -1,6 +1,7 @@
 
 .terraform/
 .idea
+.kube/
 
 *.tfstate
 *.tfstate.*

@@ -80,6 +80,17 @@ locals {
           log     = "nolog"
           comment = "Permitindo comunicação entre VM's"
           enabled = true
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          source  = module.firewall_alias["my_notebook"].name
+          dest    = module.firewall_alias["k3s_master"].name
+          proto   = "tcp"
+          dport   = "6443"
+          log     = "nolog"
+          comment = "Permitindo comunicação com o cluster k3s"
+          enabled = true
         }
       ]
     },
