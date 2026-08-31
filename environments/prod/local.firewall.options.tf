@@ -13,6 +13,7 @@ locals {
       output_policy = "ACCEPT"
       log_level_in  = "info"
       log_level_out = "nolog"
+      enabled       = true
     }
     pve1_102 = {
       node_name     = "pve1"
@@ -27,6 +28,7 @@ locals {
       output_policy = "ACCEPT"
       log_level_in  = "info"
       log_level_out = "nolog"
+      enabled       = true
     }
     pve2_103 = {
       node_name     = "pve2"
@@ -41,6 +43,7 @@ locals {
       output_policy = "ACCEPT"
       log_level_in  = "info"
       log_level_out = "nolog"
+      enabled       = true
     }
   }
 }
