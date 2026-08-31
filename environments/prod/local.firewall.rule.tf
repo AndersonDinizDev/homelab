@@ -71,6 +71,15 @@ locals {
           security_group = module.firewall_security_group["default"].id
           iface          = "net0"
           comment        = "Grupo de segurança padrão"
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          source  = module.firewall_alias["k3s_worker_1"].name
+          dest    = module.firewall_alias["k3s_master"].name
+          log     = "nolog"
+          comment = "Permitindo comunicação entre VM's"
+          enabled = true
         }
       ]
     },
@@ -82,6 +91,15 @@ locals {
           security_group = module.firewall_security_group["default"].id
           iface          = "net0"
           comment        = "Grupo de segurança padrão"
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          source  = module.firewall_alias["k3s_master"].name
+          dest    = module.firewall_alias["k3s_worker_1"].name
+          log     = "nolog"
+          comment = "Permitindo comunicação entre VM's"
+          enabled = true
         }
       ]
     }
