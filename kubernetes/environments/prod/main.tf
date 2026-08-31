@@ -19,8 +19,10 @@ provider "kubernetes" {
   config_path = "./.kube/k3s-config.yaml"
 }
 
-resource "kubernetes_namespace_v1" "teste" {
-  metadata {
-    name = "teste-namespace"
-  }
+module "deployment" {
+  for_each = local.deployments
+
+  source   = "../../modules/deployment"
+  metadata = try(each.value.metadata, null)
+  spec     = try(each.value.spec, null)
 }
