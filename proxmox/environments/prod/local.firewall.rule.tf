@@ -73,6 +73,11 @@ locals {
           comment        = "Grupo de segurança padrão"
         },
         {
+          security_group = module.firewall_security_group["k3s"].id
+          iface          = "net0"
+          comment        = "Grupo de segurança k3s"
+        },
+        {
           type    = "in"
           action  = "ACCEPT"
           source  = module.firewall_alias["k3s_worker_1"].name
@@ -91,17 +96,6 @@ locals {
           log     = "nolog"
           comment = "Permitindo comunicação com o cluster k3s"
           enabled = true
-        },
-        {
-          type    = "in"
-          action  = "ACCEPT"
-          proto   = "tcp"
-          source  = module.firewall_alias["caddy_proxy"].name
-          dest    = module.firewall_alias["k3s_master"].name
-          dport   = "80"
-          log     = "nolog"
-          comment = "Permitindo acesso a aplicação"
-          enabled = true
         }
       ]
     },
@@ -115,23 +109,17 @@ locals {
           comment        = "Grupo de segurança padrão"
         },
         {
+          security_group = module.firewall_security_group["k3s"].id
+          iface          = "net0"
+          comment        = "Grupo de segurança k3s"
+        },
+        {
           type    = "in"
           action  = "ACCEPT"
           source  = module.firewall_alias["k3s_master"].name
           dest    = module.firewall_alias["k3s_worker_1"].name
           log     = "nolog"
           comment = "Permitindo comunicação entre VM's"
-          enabled = true
-        },
-        {
-          type    = "in"
-          action  = "ACCEPT"
-          proto   = "tcp"
-          source  = module.firewall_alias["caddy_proxy"].name
-          dest    = module.firewall_alias["k3s_worker_1"].name
-          dport   = "80"
-          log     = "nolog"
-          comment = "Permitindo acesso a aplicação"
           enabled = true
         }
       ]
