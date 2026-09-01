@@ -12,6 +12,15 @@ locals {
           comment = "Segundo nó"
         }
       ]
+    },
+    workers_nodes = {
+      name = "workers_nodes"
+      cidr = [
+        {
+          name    = module.firewall_alias["k3s_worker_1"].name
+          comment = "Primeiro worker"
+        }
+      ]
     }
   }
 }

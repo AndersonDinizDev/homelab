@@ -143,4 +143,6 @@ module "firewall_security_group" {
   name    = each.value.name
   comment = try(each.value.comment, null)
   rule    = try(each.value.rules, [])
+
+  depends_on = [module.firewall_alias, module.firewall_ipset]
 }
