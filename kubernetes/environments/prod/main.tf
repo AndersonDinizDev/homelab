@@ -26,3 +26,26 @@ module "deployment" {
   metadata = try(each.value.metadata, null)
   spec     = try(each.value.spec, null)
 }
+
+module "service" {
+  for_each = local.services
+
+  source   = "../../modules/service"
+  metadata = try(each.value.metadata, null)
+  spec     = try(each.value.spec, null)
+
+  depends_on = [module.deployment]
+}
+
+module "ingress" {
+  for_each = local.ingress
+
+  source = "../../modules/ingress"
+
+
+  wait_for_load_balancer = try(each.value.wait_for_load_balancer, false)
+  metadata               = try(each.value.metadata, null)
+  spec                   = try(each.value.spec, null)
+
+  depends_on = [module.service]
+}

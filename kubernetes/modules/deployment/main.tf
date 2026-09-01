@@ -8,43 +8,36 @@ terraform {
 }
 resource "kubernetes_deployment_v1" "this" {
 
-
-  dynamic "metadata" {
-    for_each = var.metadata != null ? [var.metadata] : []
-    content {
-      name = metadata.value.name
+  metadata  {
+      name = var.metadata.name
       labels = {
-        app = metadata.value.labels.app
+        app = var.metadata.labels.app
       }
-    }
   }
 
-  dynamic "spec" {
-    for_each = var.spec != null ? [var.spec] : []
-    content {
-      replicas = spec.value.replicas
-      selector {
+  spec  {
+      replicas = var.spec.replicas
+      selector  {
         match_labels = {
-          app = spec.value.selector.matchLabels.app
+          app = var.spec.selector.matchLabels.app
         }
       }
-      template {
-        metadata {
+      template  {
+        metadata  {
           labels = {
-            app = spec.value.template.metadata.labels.app
+            app = var.spec.template.metadata.labels.app
           }
         }
-        spec {
-          node_name = spec.value.template.spec.node_name
-          container {
-            name = spec.value.template.spec.containers.name
-            image = spec.value.template.spec.containers.image
-            port {
-              container_port = spec.value.template.spec.containers.ports.containerPort
+        spec  {
+          node_name = var.spec.template.spec.node_name
+          container  {
+            name = var.spec.template.spec.containers.name
+            image = var.spec.template.spec.containers.image
+            port  {
+              container_port = var.spec.template.spec.containers.ports.containerPort
             }
           }
         }
       }
-    }
   }
 }
