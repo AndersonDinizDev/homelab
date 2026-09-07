@@ -60,5 +60,20 @@ locals {
       log_level_out = "nolog"
       enabled       = true
     }
+    pve2_105 = {
+      node_name     = "pve2"
+      vm_id         = module.proxmox_lxc["105"].id
+      dhcp          = true
+      ipfilter      = false
+      macfilter     = true
+      ndp           = true
+      radv          = true
+      enabled       = true
+      input_policy  = "DROP"
+      output_policy = "ACCEPT"
+      log_level_in  = "info"
+      log_level_out = "nolog"
+      enabled       = true
+    }
   }
 }

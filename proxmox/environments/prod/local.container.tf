@@ -78,5 +78,44 @@ locals {
         firewall = true
       }
     }
+    105 = {
+      node_name    = "pve2"
+      vm_id        = 105
+      unprivileged = true
+      features = {
+        nesting = true
+      }
+      tags = ["terraform", "debian", "triliumnotes"]
+      initialization = {
+        hostname = "triliumnotes"
+        ip_config = {
+          ipv4 = {
+            address = "${module.firewall_alias["triliumnotes"].ip}/24"
+            gateway = module.firewall_alias["gateway"].ip
+          }
+        }
+        user_account = {
+          password = var.user_password
+          keys     = trimspace(data.local_file.ssh_public_key.content)
+        }
+      }
+      disk = {
+        size         = 20
+        datastore_id = "local-lvm"
+      }
+      operating_system = {
+        template_file_id = "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst"
+        type             = "debian"
+      }
+      memory = {
+        dedicated = 2048
+        swap      = 0
+      }
+      network_interface = {
+        name     = "eth0"
+        bridge   = "vmbr0"
+        firewall = true
+      }
+    }
   }
 }

@@ -38,7 +38,11 @@ locals {
     }
     container_registry = {
       name = "container_registry"
-      cidr = "192.168.100.14"
+      cidr = "192.168.100.34"
+    }
+    triliumnotes = {
+      name = "triliumnotes"
+      cidr = "192.168.100.35"
     }
   }
 }

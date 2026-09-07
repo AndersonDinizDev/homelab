@@ -128,5 +128,27 @@ locals {
         }
       ]
     }
+    pve2_105 = {
+      node_name    = "pve2"
+      container_id = module.proxmox_lxc["105"].id
+      rules = [
+        {
+          security_group = module.firewall_security_group["default"].id
+          iface          = "net0"
+          comment        = "Grupo de segurança padrão"
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          proto   = "tcp"
+          source  = module.firewall_alias["caddy_proxy"].name
+          dest    = module.firewall_alias["triliumnotes"].name
+          dport   = "7000"
+          log     = "nolog"
+          comment = "Permitindo acesso a aplicação"
+          enabled = true
+        }
+      ]
+    }
   }
 }
