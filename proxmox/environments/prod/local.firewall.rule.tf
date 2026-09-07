@@ -41,6 +41,28 @@ locals {
         },
       ]
     },
+    pve2_100 = {
+      node_name    = "pve2"
+      container_id = module.proxmox_lxc["100"].id
+      rules = [
+        {
+          security_group = module.firewall_security_group["default"].id
+          iface          = "net0"
+          comment        = "Grupo de segurança padrão"
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          proto   = "tcp"
+          source  = module.firewall_alias["caddy_proxy"].name
+          dest    = module.firewall_alias["container_registry"].name
+          dport   = "5000"
+          log     = "nolog"
+          comment = "Permitindo acesso a aplicação"
+          enabled = true
+        }
+      ]
+    },
     pve1_101 = {
       node_name    = "pve1"
       container_id = module.proxmox_lxc["101"].id

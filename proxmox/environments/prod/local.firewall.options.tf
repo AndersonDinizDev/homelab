@@ -1,5 +1,20 @@
 locals {
   options = {
+    pve2_100 = {
+      node_name     = "pve2"
+      container_id  = module.proxmox_lxc["100"].id
+      dhcp          = true
+      ipfilter      = false
+      macfilter     = true
+      ndp           = true
+      radv          = true
+      enabled       = true
+      input_policy  = "DROP"
+      output_policy = "ACCEPT"
+      log_level_in  = "info"
+      log_level_out = "nolog"
+      enabled       = true
+    }
     pve1_101 = {
       node_name     = "pve1"
       container_id  = module.proxmox_lxc["101"].id
