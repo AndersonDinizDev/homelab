@@ -30,6 +30,16 @@ variable "spec" {
           ports = object({
             containerPort: number
           })
+          volumeMounts = object({
+            name = string
+            mountPath = string
+          })
+        })
+        volumes = object({
+          name = string
+          persistentVolumeClaim = object({
+            claimName = string
+          })
         })
       })
     })

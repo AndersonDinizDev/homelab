@@ -36,6 +36,16 @@ resource "kubernetes_deployment_v1" "this" {
             port  {
               container_port = var.spec.template.spec.containers.ports.containerPort
             }
+            volume_mount {
+              mount_path = var.spec.template.spec.containers.volumeMounts.mountPath
+              name       = var.spec.template.spec.containers.volumeMounts.name
+            }
+          }
+          volume {
+            name = var.spec.template.spec.volumes.name
+            persistent_volume_claim {
+              claim_name = var.spec.template.spec.volumes.persistentVolumeClaim.claimName
+            }
           }
         }
       }

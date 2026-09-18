@@ -18,5 +18,6 @@ variable "rule" {
     enabled = optional(bool, true)
     macro = optional(string)
     source = optional(string)
+    proto = optional(string)
   }))
 }

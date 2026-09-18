@@ -8,7 +8,7 @@ locals {
       spec = {
         ingressClassName = "traefik"
         rule = {
-          host = "nginx.andersondiniz.com"
+          host = "streaming.andersondiniz.com"
           http = {
             path = [
               {

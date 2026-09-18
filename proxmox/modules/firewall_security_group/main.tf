@@ -23,6 +23,7 @@ resource "proxmox_virtual_environment_cluster_firewall_security_group" "this" {
       enabled = rule.value.enabled
       macro = rule.value.macro
       source = rule.value.source
+      proto = rule.value.proto
     }
   }
 

@@ -34,6 +34,50 @@ locals {
         },
         {
           type    = "in"
+          action  = "ACCEPT"
+          source  = module.firewall_alias["k3s_master"].name
+          dest    = module.firewall_alias["pve_1"].name
+          dport   = "2049"
+          proto   = "tcp"
+          log     = "nolog"
+          comment = "Permitindo acesso ao nfs"
+          enabled = true
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          source  = module.firewall_alias["k3s_master"].name
+          dest    = module.firewall_alias["pve_1"].name
+          dport   = "2049"
+          proto   = "udp"
+          log     = "nolog"
+          comment = "Permitindo acesso ao nfs"
+          enabled = true
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          source  = module.firewall_alias["k3s_worker_1"].name
+          dest    = module.firewall_alias["pve_1"].name
+          dport   = "2049"
+          proto   = "tcp"
+          log     = "nolog"
+          comment = "Permitindo acesso ao nfs"
+          enabled = true
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          source  = module.firewall_alias["k3s_worker_1"].name
+          dest    = module.firewall_alias["pve_1"].name
+          dport   = "2049"
+          proto   = "udp"
+          log     = "nolog"
+          comment = "Permitindo acesso ao nfs"
+          enabled = true
+        },
+        {
+          type    = "in"
           action  = "DROP"
           comment = "Bloqueando acessos fora das regras"
           log     = "info"

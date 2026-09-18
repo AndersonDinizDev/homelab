@@ -25,6 +25,8 @@ module "deployment" {
   source   = "../../modules/deployment"
   metadata = try(each.value.metadata, null)
   spec     = try(each.value.spec, null)
+
+  depends_on = [module.persistent_volume, module.persistent_volume_claim]
 }
 
 module "service" {
@@ -49,3 +51,24 @@ module "ingress" {
 
   depends_on = [module.service]
 }
+
+module "persistent_volume" {
+  for_each = local.persistent_volume
+
+  source = "../../modules/persistent_volume"
+
+  metadata = try(each.value.metadata, null)
+  spec     = try(each.value.spec, null)
+}
+
+module "persistent_volume_claim" {
+  for_each = local.persistent_volume_claim
+
+  source = "../../modules/persistent_volume_claim"
+
+  metadata = try(each.value.metadata, null)
+  spec     = try(each.value.spec, null)
+
+  depends_on = [module.persistent_volume]
+}
+

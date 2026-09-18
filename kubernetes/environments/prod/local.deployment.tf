@@ -28,6 +28,16 @@ locals {
               ports = {
                 containerPort = 80
               }
+              volumeMounts = {
+                name      = "teste-storage"
+                mountPath = "/mnt/teste-storage"
+              }
+            }
+            volumes = {
+              name = "teste-storage"
+              persistentVolumeClaim = {
+                claimName = "teste"
+              }
             }
           }
         }
