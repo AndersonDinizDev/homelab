@@ -224,5 +224,72 @@ locals {
         }
       }
     }
+    4 = {
+      metadata = {
+        name      = "prowlarr-deployment"
+        namespace = "homelab"
+        labels = {
+          app = "prowlarr"
+        }
+      }
+      spec = {
+        replicas = 1
+        selector = {
+          matchLabels = {
+            app = "prowlarr"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "prowlarr"
+            }
+          }
+          spec = {
+            containers = [
+              {
+                name  = "prowlarr"
+                image = "lscr.io/linuxserver/prowlarr:latest"
+                ports = [
+                  {
+                    containerPort = 9696
+                    name = "http"
+                  }
+                ]
+                env = [
+                  {
+                    name  = "PUID"
+                    value = "1000"
+                  },
+                  {
+                    name  = "PGID"
+                    value = "1000"
+                  },
+                  {
+                    name  = "TZ"
+                    value = "America/Sao_Paulo"
+                  }
+                ]
+                volumeMounts = [
+                  {
+                    name      = "nt-storage"
+                    mountPath = "/config"
+                    subPath   = "pl-config"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
   }
 }
