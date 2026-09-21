@@ -28,6 +28,16 @@ variable "spec" {
         containers = list(object({
           name = string
           image = string
+          resources = optional(object({
+            limits = object({
+              cpu = string
+              memory = string
+            })
+            requests = object({
+              cpu = string
+              memory = string
+            })
+          }))
           ports = list(object({
             containerPort: number
             name: optional(string)

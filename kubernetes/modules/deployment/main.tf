@@ -37,6 +37,20 @@ resource "kubernetes_deployment_v1" "this" {
             content {
               name = container.value.name
               image = container.value.image
+              dynamic "resources" {
+                for_each = container.value.resources != null ? [container.value.resources] : []
+
+                content {
+                  limits = {
+                    cpu = resources.value.limits.cpu
+                    memory = resources.value.limits.memory
+                  }
+                  requests = {
+                    cpu = resources.value.requests.cpu
+                    memory = resources.value.requests.memory
+                  }
+                }
+              }
               dynamic "port"  {
 
                 for_each = container.value.ports != null ? container.value.ports : []

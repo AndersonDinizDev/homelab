@@ -32,6 +32,16 @@ locals {
                     name          = "http"
                   }
                 ]
+                resources = {
+                  limits = {
+                    cpu    = "2"
+                    memory = "2Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "512Mi"
+                  }
+                }
                 volumeMounts = [
                   {
                     name      = "nt-storage"
@@ -89,6 +99,16 @@ locals {
               {
                 name  = "qbittorrent"
                 image = "lscr.io/linuxserver/qbittorrent:latest"
+                resources = {
+                  limits = {
+                    cpu    = "1"
+                    memory = "1Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "256Mi"
+                  }
+                }
                 ports = [
                   {
                     containerPort = 8080
@@ -178,10 +198,20 @@ locals {
               {
                 name  = "radarr"
                 image = "lscr.io/linuxserver/radarr:latest"
+                resources = {
+                  limits = {
+                    cpu    = "0.5"
+                    memory = "1Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "256Mi"
+                  }
+                }
                 ports = [
                   {
                     containerPort = 7878
-                    name = "http"
+                    name          = "http"
                   }
                 ]
                 env = [
@@ -250,10 +280,20 @@ locals {
               {
                 name  = "prowlarr"
                 image = "lscr.io/linuxserver/prowlarr:latest"
+                resources = {
+                  limits = {
+                    cpu    = "0.5"
+                    memory = "1Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "256Mi"
+                  }
+                }
                 ports = [
                   {
                     containerPort = 9696
-                    name = "http"
+                    name          = "http"
                   }
                 ]
                 env = [
