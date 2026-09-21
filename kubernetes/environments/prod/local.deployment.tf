@@ -22,6 +22,7 @@ locals {
             }
           }
           spec = {
+            node_name = "k3s-master"
             containers = [
               {
                 name  = "jellyfin"
@@ -30,6 +31,24 @@ locals {
                   {
                     containerPort = 8096
                     name          = "http"
+                  }
+                ]
+                securityContext = {
+                  privileged = true
+                }
+
+                env = [
+                  {
+                    name  = "PUID"
+                    value = "1000"
+                  },
+                  {
+                    name  = "PGID"
+                    value = "1000"
+                  },
+                  {
+                    name  = "TZ"
+                    value = "America/Sao_Paulo"
                   }
                 ]
                 resources = {
@@ -303,6 +322,79 @@ locals {
                   {
                     name  = "TZ"
                     value = "America/Sao_Paulo"
+                  }
+                ]
+                volumeMounts = [
+                  {
+                    name      = "nt-storage"
+                    mountPath = "/config"
+                    subPath   = "pl-config"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+    5 = {
+      metadata = {
+        name      = "flaresolverr-deployment"
+        namespace = "homelab"
+        labels = {
+          app = "flaresolverr"
+        }
+      }
+      spec = {
+        replicas = 1
+        selector = {
+          matchLabels = {
+            app = "flaresolverr"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "flaresolverr"
+            }
+          }
+          spec = {
+            containers = [
+              {
+                name  = "flaresolverr"
+                image = "ghcr.io/flaresolverr/flaresolverr:latest"
+                resources = {
+                  limits = {
+                    cpu    = "0.5"
+                    memory = "1Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "256Mi"
+                  }
+                }
+                ports = [
+                  {
+                    containerPort = 8191
+                    name          = "http"
+                  }
+                ]
+                env = [
+                  {
+                    name  = "TZ"
+                    value = "America/Sao_Paulo"
+                  },
+                  {
+                    name  = "LOG_LEVEL"
+                    value = "info"
                   }
                 ]
                 volumeMounts = [

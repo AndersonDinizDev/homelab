@@ -37,6 +37,13 @@ resource "kubernetes_deployment_v1" "this" {
             content {
               name = container.value.name
               image = container.value.image
+              dynamic "security_context" {
+                for_each = container.value.securityContext != null ? [container.value.securityContext] : []
+
+                content {
+                  privileged = container.value.securityContext.privileged
+                }
+              }
               dynamic "resources" {
                 for_each = container.value.resources != null ? [container.value.resources] : []
 
@@ -83,8 +90,17 @@ resource "kubernetes_deployment_v1" "this" {
             content {
               name = volume.value.name
 
-              persistent_volume_claim {
-                claim_name = volume.value.persistentVolumeClaim.claimName
+              dynamic "persistent_volume_claim" {
+                for_each = volume.value.persistentVolumeClaim != null ? [volume.value.persistentVolumeClaim] : []
+                content {
+                  claim_name = persistent_volume_claim.value.claimName
+                }
+              }
+              dynamic "host_path" {
+                for_each = volume.value.host_path != null ? [volume.value.host_path] : []
+                content {
+                  path = host_path.value.path
+                }
               }
             }
           }

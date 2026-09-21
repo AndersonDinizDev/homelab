@@ -88,5 +88,24 @@ locals {
         ]
       }
     }
+    5 = {
+      metadata = {
+        name      = "flaresolverr-service"
+        namespace = "homelab"
+      }
+      spec = {
+        selector = {
+          app = "flaresolverr"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8191
+            targetPort = 8191
+            name       = "http"
+          }
+        ]
+      }
+    }
   }
 }

@@ -28,6 +28,9 @@ variable "spec" {
         containers = list(object({
           name = string
           image = string
+          securityContext = optional(object({
+            privileged = bool
+          }))
           resources = optional(object({
             limits = object({
               cpu = string
@@ -55,9 +58,12 @@ variable "spec" {
         }))
         volumes = optional(list(object({
           name = string
-          persistentVolumeClaim = object({
+          persistentVolumeClaim = optional(object({
             claimName = string
-          })
+          }))
+          host_path = optional(object({
+            path = string
+          }))
         })))
       })
     })
