@@ -50,13 +50,8 @@ locals {
                   },
                   {
                     name      = "nt-storage"
-                    mountPath = "/data/downloads"
-                    subPath   = "data/downloads"
-                  },
-                  {
-                    name      = "nt-storage"
-                    mountPath = "/data/media"
-                    subPath   = "data/media"
+                    mountPath = "/data"
+                    subPath   = "data"
                   }
                 ]
               }
@@ -154,8 +149,8 @@ locals {
                   },
                   {
                     name      = "nt-storage"
-                    mountPath = "/data/downloads"
-                    subPath   = "data/downloads"
+                    mountPath = "/data"
+                    subPath   = "data"
                   }
                 ]
               }

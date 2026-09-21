@@ -19,5 +19,74 @@ locals {
         ]
       }
     }
+    2 = {
+      metadata = {
+        name      = "qbittorrent-service"
+        namespace = "homelab"
+      }
+      spec = {
+        selector = {
+          app = "qbittorrent"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8080
+            targetPort = 8080
+            name       = "http"
+          },
+          {
+            protocol   = "TCP"
+            port       = 6881
+            targetPort = 6881
+            name       = "torrenting-tcp"
+          },
+          {
+            protocol   = "UDP"
+            port       = 6881
+            targetPort = 6881
+            name       = "torrenting-udp"
+          }
+        ]
+      }
+    }
+    3 = {
+      metadata = {
+        name      = "radarr-service"
+        namespace = "homelab"
+      }
+      spec = {
+        selector = {
+          app = "radarr"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 7878
+            targetPort = 7878
+            name       = "http"
+          }
+        ]
+      }
+    }
+    4 = {
+      metadata = {
+        name      = "prowlarr-service"
+        namespace = "homelab"
+      }
+      spec = {
+        selector = {
+          app = "prowlarr"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 9696
+            targetPort = 9696
+            name       = "http"
+          }
+        ]
+      }
+    }
   }
 }
