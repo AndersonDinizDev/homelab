@@ -71,7 +71,7 @@ locals {
         }
       }
       cpu = {
-        cores = 1
+        cores = 2
       }
       disk = {
         size         = 32
@@ -82,7 +82,7 @@ locals {
         type = "l26"
       }
       memory = {
-        dedicated = 2048
+        dedicated = 4096
         swap      = 0
       }
       network_interface = {

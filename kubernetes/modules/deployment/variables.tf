@@ -24,7 +24,7 @@ variable "spec" {
         })
       })
       spec = object({
-        node_name = string
+        node_name = optional(string)
         containers = list(object({
           name = string
           image = string
