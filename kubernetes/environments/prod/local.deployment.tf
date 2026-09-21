@@ -2,43 +2,63 @@ locals {
   deployments = {
     1 = {
       metadata = {
-        name = "nginx-deployment"
+        name      = "jellyfin-deployment"
+        namespace = "homelab"
         labels = {
-          app = "nginx"
+          app = "jellyfin"
         }
       }
       spec = {
-        replicas = 3
+        replicas = 1
         selector = {
           matchLabels = {
-            app = "nginx"
+            app = "jellyfin"
           }
         }
         template = {
           metadata = {
             labels = {
-              app = "nginx"
+              app = "jellyfin"
             }
           }
           spec = {
             node_name = "k3s-worker-1"
-            containers = {
-              name  = "nginx"
-              image = "nginx:latest"
-              ports = {
-                containerPort = 80
+            containers = [
+              {
+                name  = "jellyfin"
+                image = "jellyfin/jellyfin:latest"
+                ports = [
+                  {
+                    containerPort = 8096
+                    name          = "http"
+                  }
+                ]
+                volumeMounts = [
+                  {
+                    name      = "nt-storage"
+                    mountPath = "/mnt/nt-storage"
+                  },
+                  {
+                    name      = "nt-storage"
+                    mountPath = "/config"
+                    subPath   = "jf-config"
+                  },
+                  {
+                    name      = "nt-storage"
+                    mountPath = "/media"
+                    subPath   = "jf-media"
+                  }
+                ]
               }
-              volumeMounts = {
-                name      = "teste-storage"
-                mountPath = "/mnt/teste-storage"
+            ]
+            volumes = [
+              {
+                name = "nt-storage"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage"
+                }
               }
-            }
-            volumes = {
-              name = "teste-storage"
-              persistentVolumeClaim = {
-                claimName = "teste"
-              }
-            }
+            ]
           }
         }
       }

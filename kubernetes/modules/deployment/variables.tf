@@ -2,6 +2,7 @@
 variable "metadata" {
   type = object({
     name = string
+    namespace = optional(string)
     labels = object({
       app = string
     })
@@ -24,23 +25,25 @@ variable "spec" {
       })
       spec = object({
         node_name = string
-        containers = object({
+        containers = list(object({
           name = string
           image = string
-          ports = object({
+          ports = list(object({
             containerPort: number
-          })
-          volumeMounts = object({
+            name: optional(string)
+          }))
+          volumeMounts = optional(list(object({
             name = string
             mountPath = string
-          })
-        })
-        volumes = object({
+            subPath = optional(string)
+          })))
+        }))
+        volumes = optional(list(object({
           name = string
           persistentVolumeClaim = object({
             claimName = string
           })
-        })
+        })))
       })
     })
   })

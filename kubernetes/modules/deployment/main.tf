@@ -10,6 +10,7 @@ resource "kubernetes_deployment_v1" "this" {
 
   metadata  {
       name = var.metadata.name
+      namespace = var.metadata.namespace
       labels = {
         app = var.metadata.labels.app
       }
@@ -30,21 +31,38 @@ resource "kubernetes_deployment_v1" "this" {
         }
         spec  {
           node_name = var.spec.template.spec.node_name
-          container  {
-            name = var.spec.template.spec.containers.name
-            image = var.spec.template.spec.containers.image
-            port  {
-              container_port = var.spec.template.spec.containers.ports.containerPort
-            }
-            volume_mount {
-              mount_path = var.spec.template.spec.containers.volumeMounts.mountPath
-              name       = var.spec.template.spec.containers.volumeMounts.name
+          dynamic "container"  {
+
+            for_each = var.spec.template.spec.containers != null ? var.spec.template.spec.containers : []
+            content {
+              name = container.value.name
+              image = container.value.image
+              dynamic "port"  {
+
+                for_each = container.value.ports != null ? container.value.ports : []
+                content {
+                  container_port = port.value.containerPort
+                  name = port.value.name
+                }
+              }
+              dynamic "volume_mount" {
+                for_each = container.value.volumeMounts != null ? container.value.volumeMounts : []
+                content {
+                  mount_path = volume_mount.value.mountPath
+                  name = volume_mount.value.name
+                  sub_path = volume_mount.value.subPath
+                }
+              }
             }
           }
-          volume {
-            name = var.spec.template.spec.volumes.name
-            persistent_volume_claim {
-              claim_name = var.spec.template.spec.volumes.persistentVolumeClaim.claimName
+          dynamic "volume" {
+            for_each = var.spec.template.spec.volumes != null ? var.spec.template.spec.volumes : []
+            content {
+              name = volume.value.name
+
+              persistent_volume_claim {
+                claim_name = volume.value.persistentVolumeClaim.claimName
+              }
             }
           }
         }

@@ -6,13 +6,14 @@ variable "wait_for_load_balancer" {
 variable "metadata" {
   type = object({
     name = string
+    namespace = optional(string)
   })
 }
 
 variable "spec" {
   type = object({
     ingressClassName = optional(string)
-    rule = object({
+    rule = list(object({
       host = optional(string)
       http = object({
         path = list(object({
@@ -22,12 +23,13 @@ variable "spec" {
             service = object({
               name = string
               port = object({
-                number = number
+                number = optional(number)
+                name = optional(string)
               })
             })
           })
         }))
       })
-    })
+    }))
   })
 }

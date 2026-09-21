@@ -2,15 +2,15 @@ locals {
   persistent_volume = {
     1 = {
       metadata = {
-        name = "teste"
+        name = "nt-storage"
       }
       spec = {
         capacity = {
-          storage = "100Gi"
+          storage = "500Gi"
         }
         persistent_volume_source = {
           nfs = {
-            path   = "/storage-hd"
+            path   = "/storage-pve/proxmox"
             server = "192.168.100.11"
           }
         }

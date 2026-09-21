@@ -2,17 +2,21 @@ locals {
   services = {
     1 = {
       metadata = {
-        name = "teste-service-1"
+        name      = "jellyfin-service"
+        namespace = "homelab"
       }
       spec = {
         selector = {
-          app = "nginx"
+          app = "jellyfin"
         }
-        ports = {
-          protocol   = "TCP"
-          port       = 8000
-          targetPort = 80
-        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8096
+            targetPort = 8096
+            name       = "http"
+          }
+        ]
       }
     }
   }

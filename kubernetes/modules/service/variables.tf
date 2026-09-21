@@ -1,6 +1,7 @@
 variable "metadata" {
   type = object({
     name = string
+    namespace = optional(string)
   })
 }
 
@@ -9,10 +10,11 @@ variable "spec" {
     selector = object({
       app = string
     })
-    ports = object({
+    ports = list(object({
       protocol = string
       port = number
       targetPort = number
-    })
+      name  = optional(string)
+    }))
   })
 }

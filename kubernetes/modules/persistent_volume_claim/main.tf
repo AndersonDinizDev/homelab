@@ -10,6 +10,7 @@ resource "kubernetes_persistent_volume_claim_v1" "this" {
 
   metadata {
     name = var.metadata.name
+    namespace = var.metadata.namespace
   }
 
   spec {

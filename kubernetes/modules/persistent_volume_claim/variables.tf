@@ -1,6 +1,7 @@
 variable "metadata" {
   type = object({
     name = string
+    namespace = optional(string)
   })
 }
 

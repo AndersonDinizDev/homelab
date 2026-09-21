@@ -2,12 +2,13 @@ locals {
   persistent_volume_claim = {
     1 = {
       metadata = {
-        name = "teste"
+        name      = "nt-storage"
+        namespace = "homelab"
       }
       spec = {
         resources = {
           requests = {
-            storage = "5Gi"
+            storage = "100Gi"
           }
         }
         access_modes = ["ReadWriteMany"]
