@@ -33,10 +33,6 @@ locals {
                     name          = "http"
                   }
                 ]
-                securityContext = {
-                  privileged = true
-                }
-
                 env = [
                   {
                     name  = "PUID"
