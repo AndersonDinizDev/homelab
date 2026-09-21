@@ -31,7 +31,12 @@ variable "spec" {
           ports = list(object({
             containerPort: number
             name: optional(string)
+            protocol: optional(string, "TCP")
           }))
+          env = optional(list(object({
+            name = string
+            value = string
+          })))
           volumeMounts = optional(list(object({
             name = string
             mountPath = string

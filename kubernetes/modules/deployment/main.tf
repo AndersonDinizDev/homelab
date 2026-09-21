@@ -43,6 +43,15 @@ resource "kubernetes_deployment_v1" "this" {
                 content {
                   container_port = port.value.containerPort
                   name = port.value.name
+                  protocol = port.value.protocol
+                }
+              }
+              dynamic "env" {
+
+                for_each = container.value.env != null ? container.value.env : []
+                content {
+                  name = env.value.name
+                  value = env.value.value
                 }
               }
               dynamic "volume_mount" {
