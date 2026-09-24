@@ -110,6 +110,7 @@ locals {
           spec = {
             hostNetwork = true
             dnsPolicy   = "ClusterFirstWithHostNet"
+            node_name = "k3s-worker-1"
             containers = [
               {
                 name  = "qbittorrent"
