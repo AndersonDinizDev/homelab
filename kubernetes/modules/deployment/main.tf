@@ -18,6 +18,14 @@ resource "kubernetes_deployment_v1" "this" {
 
   spec  {
       replicas = var.spec.replicas
+
+      dynamic "strategy" {
+
+        for_each = var.spec.strategy != null ? [var.spec.strategy] : []
+        content {
+          type     = strategy.value.type
+        }
+      }
       selector  {
         match_labels = {
           app = var.spec.selector.matchLabels.app
@@ -30,6 +38,8 @@ resource "kubernetes_deployment_v1" "this" {
           }
         }
         spec  {
+          host_network = var.spec.template.spec.hostNetwork
+          dns_policy = var.spec.template.spec.dnsPolicy
           node_name = var.spec.template.spec.node_name
           dynamic "container"  {
 

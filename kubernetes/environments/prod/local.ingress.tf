@@ -84,6 +84,25 @@ locals {
                 }
               ]
             }
+          },
+          {
+            host = "sonarr.andersondiniz.com"
+            http = {
+              path = [
+                {
+                  path     = "/"
+                  pathType = "Prefix"
+                  backend = {
+                    service = {
+                      name = "sonarr-service"
+                      port = {
+                        name = "http"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         ]
       }

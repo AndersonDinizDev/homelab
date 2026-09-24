@@ -93,6 +93,9 @@ locals {
       }
       spec = {
         replicas = 1
+        strategy = {
+          type = "Recreate"
+        }
         selector = {
           matchLabels = {
             app = "qbittorrent"
@@ -105,6 +108,8 @@ locals {
             }
           }
           spec = {
+            hostNetwork = true
+            dnsPolicy   = "ClusterFirstWithHostNet"
             containers = [
               {
                 name  = "qbittorrent"
@@ -343,30 +348,30 @@ locals {
     }
     5 = {
       metadata = {
-        name      = "flaresolverr-deployment"
+        name      = "sonarr-deployment"
         namespace = "homelab"
         labels = {
-          app = "flaresolverr"
+          app = "sonarr"
         }
       }
       spec = {
         replicas = 1
         selector = {
           matchLabels = {
-            app = "flaresolverr"
+            app = "sonarr"
           }
         }
         template = {
           metadata = {
             labels = {
-              app = "flaresolverr"
+              app = "sonarr"
             }
           }
           spec = {
             containers = [
               {
-                name  = "flaresolverr"
-                image = "ghcr.io/flaresolverr/flaresolverr:latest"
+                name  = "sonarr"
+                image = "lscr.io/linuxserver/sonarr:latest"
                 resources = {
                   limits = {
                     cpu    = "0.5"
@@ -379,25 +384,34 @@ locals {
                 }
                 ports = [
                   {
-                    containerPort = 8191
+                    containerPort = 8989
                     name          = "http"
                   }
                 ]
                 env = [
                   {
-                    name  = "TZ"
-                    value = "America/Sao_Paulo"
+                    name  = "PUID"
+                    value = "1000"
                   },
                   {
-                    name  = "LOG_LEVEL"
-                    value = "info"
+                    name  = "PGID"
+                    value = "1000"
+                  },
+                  {
+                    name  = "TZ"
+                    value = "America/Sao_Paulo"
                   }
                 ]
                 volumeMounts = [
                   {
                     name      = "nt-storage"
                     mountPath = "/config"
-                    subPath   = "pl-config"
+                    subPath   = "sn-config"
+                  },
+                  {
+                    name      = "nt-storage"
+                    mountPath = "/data"
+                    subPath   = "data"
                   }
                 ]
               }

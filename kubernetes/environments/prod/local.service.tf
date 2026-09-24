@@ -90,18 +90,18 @@ locals {
     }
     5 = {
       metadata = {
-        name      = "flaresolverr-service"
+        name      = "sonarr-service"
         namespace = "homelab"
       }
       spec = {
         selector = {
-          app = "flaresolverr"
+          app = "sonarr"
         }
         ports = [
           {
             protocol   = "TCP"
-            port       = 8191
-            targetPort = 8191
+            port       = 8989
+            targetPort = 8989
             name       = "http"
           }
         ]

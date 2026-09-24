@@ -12,6 +12,9 @@ variable "metadata" {
 variable "spec" {
   type = object({
     replicas = number
+    strategy = optional(object({
+      type = string
+    }))
     selector = object({
       matchLabels = object({
         app = string
@@ -25,6 +28,8 @@ variable "spec" {
       })
       spec = object({
         node_name = optional(string)
+        hostNetwork = optional(bool, null)
+        dnsPolicy = optional(string, null)
         containers = list(object({
           name = string
           image = string

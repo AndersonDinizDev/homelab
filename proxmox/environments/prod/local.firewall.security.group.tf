@@ -53,6 +53,24 @@ locals {
           source  = module.firewall_alias["k3s_master"].name
           comment = "Permite comunicação entre worker e master"
           log     = "nolog"
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          proto   = "tcp"
+          dport   = "6881"
+          log     = "nolog"
+          comment = "Permitir tráfego TCP do qBittorrent"
+          enabled = true
+        },
+        {
+          type    = "in"
+          action  = "ACCEPT"
+          proto   = "udp"
+          dport   = "6881"
+          log     = "nolog"
+          comment = "Permitir tráfego UDP do qBittorrent"
+          enabled = true
         }
       ]
     }
