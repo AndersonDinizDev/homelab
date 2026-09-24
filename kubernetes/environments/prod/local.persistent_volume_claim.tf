@@ -3,7 +3,7 @@ locals {
     1 = {
       metadata = {
         name      = "nt-storage"
-        namespace = "homelab"
+        namespace = "media-center"
       }
       spec = {
         resources = {

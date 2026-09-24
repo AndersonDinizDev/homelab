@@ -3,8 +3,8 @@ locals {
     1 = {
       wait_for_load_balancer = false
       metadata = {
-        name      = "homelab-ingress"
-        namespace = "homelab"
+        name      = "media-center-ingress"
+        namespace = "media-center"
       }
       spec = {
         ingressClassName = "traefik"

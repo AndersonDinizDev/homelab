@@ -3,7 +3,7 @@ locals {
     1 = {
       metadata = {
         name      = "jellyfin-deployment"
-        namespace = "homelab"
+        namespace = "media-center"
         labels = {
           app = "jellyfin"
         }
@@ -86,7 +86,7 @@ locals {
     2 = {
       metadata = {
         name      = "qbittorrent-deployment"
-        namespace = "homelab"
+        namespace = "media-center"
         labels = {
           app = "qbittorrent"
         }
@@ -190,7 +190,7 @@ locals {
     3 = {
       metadata = {
         name      = "radarr-deployment"
-        namespace = "homelab"
+        namespace = "media-center"
         labels = {
           app = "radarr"
         }
@@ -272,7 +272,7 @@ locals {
     4 = {
       metadata = {
         name      = "prowlarr-deployment"
-        namespace = "homelab"
+        namespace = "media-center"
         labels = {
           app = "prowlarr"
         }
@@ -349,7 +349,7 @@ locals {
     5 = {
       metadata = {
         name      = "sonarr-deployment"
-        namespace = "homelab"
+        namespace = "media-center"
         labels = {
           app = "sonarr"
         }

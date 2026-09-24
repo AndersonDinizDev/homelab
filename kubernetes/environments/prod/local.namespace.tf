@@ -5,5 +5,10 @@ locals {
         name = "homelab"
       }
     }
+    2 = {
+      metadata = {
+        name = "media-center"
+      }
+    }
   }
 }

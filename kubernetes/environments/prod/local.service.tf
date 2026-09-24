@@ -3,7 +3,7 @@ locals {
     1 = {
       metadata = {
         name      = "jellyfin-service"
-        namespace = "homelab"
+        namespace = "media-center"
       }
       spec = {
         selector = {
@@ -22,7 +22,7 @@ locals {
     2 = {
       metadata = {
         name      = "qbittorrent-service"
-        namespace = "homelab"
+        namespace = "media-center"
       }
       spec = {
         selector = {
@@ -53,7 +53,7 @@ locals {
     3 = {
       metadata = {
         name      = "radarr-service"
-        namespace = "homelab"
+        namespace = "media-center"
       }
       spec = {
         selector = {
@@ -72,7 +72,7 @@ locals {
     4 = {
       metadata = {
         name      = "prowlarr-service"
-        namespace = "homelab"
+        namespace = "media-center"
       }
       spec = {
         selector = {
@@ -91,7 +91,7 @@ locals {
     5 = {
       metadata = {
         name      = "sonarr-service"
-        namespace = "homelab"
+        namespace = "media-center"
       }
       spec = {
         selector = {
