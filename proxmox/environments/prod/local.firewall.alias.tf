@@ -24,10 +24,6 @@ locals {
       name = "caddy_proxy"
       cidr = "192.168.100.1"
     }
-    vaultwarden = {
-      name = "vaultwarden"
-      cidr = "192.168.100.12"
-    }
     k3s_master = {
       name = "k3s_master"
       cidr = "192.168.100.13"
@@ -39,10 +35,6 @@ locals {
     container_registry = {
       name = "container_registry"
       cidr = "192.168.100.34"
-    }
-    triliumnotes = {
-      name = "triliumnotes"
-      cidr = "192.168.100.35"
     }
   }
 }
