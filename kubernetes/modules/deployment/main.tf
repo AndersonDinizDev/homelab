@@ -41,6 +41,14 @@ resource "kubernetes_deployment_v1" "this" {
           host_network = var.spec.template.spec.hostNetwork
           dns_policy = var.spec.template.spec.dnsPolicy
           node_name = var.spec.template.spec.node_name
+          dynamic "security_context" {
+            for_each = var.spec.template.spec.securityContext != null ? [var.spec.template.spec.securityContext] : []
+            content {
+              run_as_user = security_context.value.runAsUser
+              run_as_group = security_context.value.runAsGroup
+              fs_group = security_context.value.fsGroup
+            }
+          }
           dynamic "container"  {
 
             for_each = var.spec.template.spec.containers != null ? var.spec.template.spec.containers : []

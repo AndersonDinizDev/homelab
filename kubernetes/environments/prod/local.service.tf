@@ -107,5 +107,24 @@ locals {
         ]
       }
     }
+    6 = {
+      metadata = {
+        name      = "vaultwarden-service"
+        namespace = "work-center"
+      }
+      spec = {
+        selector = {
+          app = "vaultwarden"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8972
+            targetPort = 80
+            name       = "http"
+          }
+        ]
+      }
+    }
   }
 }

@@ -23,6 +23,11 @@ locals {
           }
           spec = {
             node_name = "k3s-master"
+            securityContext = {
+              runAsUser  = 1000
+              runAsGroup = 1000
+              fsGroup    = 1000
+            }
             containers = [
               {
                 name  = "jellyfin"
@@ -110,7 +115,7 @@ locals {
           spec = {
             hostNetwork = true
             dnsPolicy   = "ClusterFirstWithHostNet"
-            node_name = "k3s-worker-1"
+            node_name   = "k3s-worker-1"
             containers = [
               {
                 name  = "qbittorrent"
@@ -422,6 +427,80 @@ locals {
                 name = "nt-storage"
                 persistentVolumeClaim = {
                   claimName = "nt-storage"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+    6 = {
+      metadata = {
+        name      = "vaultwarden-deployment"
+        namespace = "work-center"
+        labels = {
+          app = "vaultwarden"
+        }
+      }
+      spec = {
+        replicas = 1
+        selector = {
+          matchLabels = {
+            app = "vaultwarden"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "vaultwarden"
+            }
+          }
+          spec = {
+            securityContext = {
+              runAsUser  = 1000
+              runAsGroup = 1000
+              fsGroup    = 1000
+            }
+            containers = [
+              {
+                name  = "vaultwarden"
+                image = "vaultwarden/server:latest"
+                ports = [
+                  {
+                    containerPort = 80
+                    name          = "http"
+                  }
+                ]
+                env = [
+                  {
+                    name  = "DOMAIN"
+                    value = "https://vault.andersondiniz.com"
+                  }
+                ]
+                resources = {
+                  limits = {
+                    cpu    = "1"
+                    memory = "2Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "512Mi"
+                  }
+                }
+                volumeMounts = [
+                  {
+                    name      = "nt-storage-2"
+                    mountPath = "/data"
+                    subPath   = "vw-config"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage-2"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage-2"
                 }
               }
             ]

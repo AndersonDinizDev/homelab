@@ -107,5 +107,37 @@ locals {
         ]
       }
     }
+    2 = {
+      wait_for_load_balancer = false
+      metadata = {
+        name      = "work-center-ingress"
+        namespace = "work-center"
+      }
+
+      spec = {
+        ingressClassName = "traefik"
+        rule = [
+          {
+            host = "vault.andersondiniz.com"
+            http = {
+              path = [
+                {
+                  path     = "/"
+                  pathType = "Prefix"
+                  backend = {
+                    service = {
+                      name = "vaultwarden-service"
+                      port = {
+                        name = "http"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
   }
 }

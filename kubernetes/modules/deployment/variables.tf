@@ -30,6 +30,11 @@ variable "spec" {
         node_name = optional(string)
         hostNetwork = optional(bool, null)
         dnsPolicy = optional(string, null)
+        securityContext = optional(object({
+          runAsUser = string
+          runAsGroup = string
+          fsGroup = string
+        }))
         containers = list(object({
           name = string
           image = string
