@@ -508,5 +508,85 @@ locals {
         }
       }
     }
+    7 = {
+      metadata = {
+        name      = "triliumnotes-deployment"
+        namespace = "work-center"
+        labels = {
+          app = "triliumnotes"
+        }
+      }
+      spec = {
+        replicas = 1
+        selector = {
+          matchLabels = {
+            app = "triliumnotes"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "triliumnotes"
+            }
+          }
+          spec = {
+            securityContext = {
+              fsGroup = 1000
+            }
+            containers = [
+              {
+                name  = "triliumnotes"
+                image = "triliumnext/trilium:latest"
+                ports = [
+                  {
+                    containerPort = 8080
+                    name          = "http"
+                  }
+                ]
+                env = [
+                  {
+                    name  = "USER_UID"
+                    value = "1000"
+                  },
+                  {
+                    name  = "USER_GID"
+                    value = "1000"
+                  },
+                  {
+                    name  = "TRILIUM_DATA_DIR"
+                    value = "/data"
+                  }
+                ]
+                resources = {
+                  limits = {
+                    cpu    = "1"
+                    memory = "1Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "512Mi"
+                  }
+                }
+                volumeMounts = [
+                  {
+                    name      = "nt-storage-2"
+                    mountPath = "/data"
+                    subPath   = "tn-config"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage-2"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage-2"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
   }
 }

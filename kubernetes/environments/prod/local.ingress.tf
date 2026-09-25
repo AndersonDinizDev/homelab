@@ -135,6 +135,25 @@ locals {
                 }
               ]
             }
+          },
+          {
+            host = "notes.andersondiniz.com"
+            http = {
+              path = [
+                {
+                  path     = "/"
+                  pathType = "Prefix"
+                  backend = {
+                    service = {
+                      name = "triliumnotes-service"
+                      port = {
+                        name = "http"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         ]
       }

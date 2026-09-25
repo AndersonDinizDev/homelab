@@ -31,9 +31,9 @@ variable "spec" {
         hostNetwork = optional(bool, null)
         dnsPolicy = optional(string, null)
         securityContext = optional(object({
-          runAsUser = string
-          runAsGroup = string
-          fsGroup = string
+          runAsUser = optional(string)
+          runAsGroup = optional(string)
+          fsGroup = optional(string)
         }))
         containers = list(object({
           name = string

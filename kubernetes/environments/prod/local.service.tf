@@ -126,5 +126,24 @@ locals {
         ]
       }
     }
+    7 = {
+      metadata = {
+        name      = "triliumnotes-service"
+        namespace = "work-center"
+      }
+      spec = {
+        selector = {
+          app = "triliumnotes"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8862
+            targetPort = 8080
+            name       = "http"
+          }
+        ]
+      }
+    }
   }
 }
