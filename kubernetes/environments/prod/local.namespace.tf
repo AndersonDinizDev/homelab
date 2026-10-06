@@ -10,5 +10,10 @@ locals {
         name = "media-center"
       }
     }
+    3 = {
+      metadata = {
+        name = "backend-center"
+      }
+    }
   }
 }

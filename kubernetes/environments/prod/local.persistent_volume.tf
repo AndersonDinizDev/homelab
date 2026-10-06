@@ -34,5 +34,22 @@ locals {
         access_modes = ["ReadWriteMany"]
       }
     }
+    3 = {
+      metadata = {
+        name = "nt-storage-3"
+      }
+      spec = {
+        capacity = {
+          storage = "100Gi"
+        }
+        persistent_volume_source = {
+          nfs = {
+            path   = "/storage-pve/proxmox"
+            server = "192.168.100.11"
+          }
+        }
+        access_modes = ["ReadWriteMany"]
+      }
+    }
   }
 }

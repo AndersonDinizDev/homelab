@@ -588,5 +588,74 @@ locals {
         }
       }
     }
+    8 = {
+      metadata = {
+        name      = "custom-indexers-deployment"
+        namespace = "backend-center"
+        labels = {
+          app = "custom-indexers"
+        }
+      }
+      spec = {
+        replicas = 1
+        selector = {
+          matchLabels = {
+            app = "custom-indexers"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "custom-indexers"
+            }
+          }
+          spec = {
+            containers = [
+              {
+                name  = "custom-indexers"
+                image = "registry.andersondiniz.com/custom-indexers:latest"
+                ports = [
+                  {
+                    containerPort = 8662
+                    name          = "http"
+                  }
+                ]
+                env = [
+                  {
+                    name  = "SERVER_PORT"
+                    value = "8662"
+                  }
+                ]
+                resources = {
+                  limits = {
+                    cpu    = "250m"
+                    memory = "128Mi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "128Mi"
+                  }
+                }
+                volumeMounts = [
+                  {
+                    name      = "nt-storage-3"
+                    mountPath = "/app/internal/database/data/data_1.db"
+                    subPath   = "docker/databases/data_1.db"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage-3"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage-3"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
   }
 }

@@ -30,5 +30,20 @@ locals {
         volume_name  = module.persistent_volume["2"].volume_name
       }
     }
+    3 = {
+      metadata = {
+        name      = "nt-storage-3"
+        namespace = "backend-center"
+      }
+      spec = {
+        resources = {
+          requests = {
+            storage = "50Gi"
+          }
+        }
+        access_modes = ["ReadWriteMany"]
+        volume_name  = module.persistent_volume["3"].volume_name
+      }
+    }
   }
 }

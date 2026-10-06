@@ -145,5 +145,24 @@ locals {
         ]
       }
     }
+    8 = {
+      metadata = {
+        name      = "custom-indexers-service"
+        namespace = "backend-center"
+      }
+      spec = {
+        selector = {
+          app = "custom-indexers"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8662
+            targetPort = 8662
+            name       = "http"
+          }
+        ]
+      }
+    }
   }
 }

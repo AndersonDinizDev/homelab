@@ -158,5 +158,37 @@ locals {
         ]
       }
     }
+    3 = {
+      wait_for_load_balancer = false
+      metadata = {
+        name      = "backend-center-ingress"
+        namespace = "backend-center"
+      }
+
+      spec = {
+        ingressClassName = "traefik"
+        rule = [
+          {
+            host = "indexers.andersondiniz.com"
+            http = {
+              path = [
+                {
+                  path     = "/"
+                  pathType = "Prefix"
+                  backend = {
+                    service = {
+                      name = "custom-indexers-service"
+                      port = {
+                        name = "http"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
   }
 }
