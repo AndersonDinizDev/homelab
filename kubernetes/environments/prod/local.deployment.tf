@@ -657,5 +657,79 @@ locals {
         }
       }
     }
+    9 = {
+      metadata = {
+        name      = "postgresql-deployment"
+        namespace = "backend-center"
+        labels = {
+          app = "postgresql"
+        }
+      }
+      spec = {
+        replicas = 1
+        selector = {
+          matchLabels = {
+            app = "postgresql"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "postgresql"
+            }
+          }
+          spec = {
+            securityContext = {
+              runAsUser  = 1000
+              runAsGroup = 1000
+              fsGroup    = 1000
+            }
+            containers = [
+              {
+                name  = "postgresql"
+                image = "postgres:18.6"
+                ports = [
+                  {
+                    containerPort = 5432
+                    name          = "dbport"
+                  }
+                ]
+                env = [
+                  {
+                    name  = "POSTGRES_PASSWORD"
+                    value = var.postgres_password
+                  }
+                ]
+                resources = {
+                  limits = {
+                    cpu    = "2"
+                    memory = "2Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "512Mi"
+                  }
+                }
+                volumeMounts = [
+                  {
+                    name      = "nt-storage-3"
+                    mountPath = "/var/lib/postgresql"
+                    subPath   = "pg-config"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage-3"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage-3"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
   }
 }

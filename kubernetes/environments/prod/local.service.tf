@@ -164,5 +164,24 @@ locals {
         ]
       }
     }
+    9 = {
+      metadata = {
+        name      = "postgresql-service"
+        namespace = "backend-center"
+      }
+      spec = {
+        selector = {
+          app = "postgresql"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 5432
+            targetPort = 5432
+            name       = "dbport"
+          }
+        ]
+      }
+    }
   }
 }

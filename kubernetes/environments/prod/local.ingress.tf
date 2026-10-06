@@ -186,6 +186,25 @@ locals {
                 }
               ]
             }
+          },
+          {
+            host = "database.andersondiniz.com"
+            http = {
+              path = [
+                {
+                  path     = "/"
+                  pathType = "Prefix"
+                  backend = {
+                    service = {
+                      name = "postgresql-service"
+                      port = {
+                        name = "dbport"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         ]
       }
