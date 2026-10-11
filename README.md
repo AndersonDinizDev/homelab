@@ -166,7 +166,6 @@ As aplicações são publicadas externamente através de regras de Ingress geren
 | `sonarr.andersondiniz.com` | `sonarr-service:8989` | `media-center` |
 | `vault.andersondiniz.com` | `vaultwarden-service:80` | `work-center` |
 | `notes.andersondiniz.com` | `triliumnotes-service:8080` | `work-center` |
-| `indexers.andersondiniz.com` | `custom-indexers-service:80` | `backend-center` |
 
 ---
 
