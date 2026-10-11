@@ -17,7 +17,7 @@ variable "dbuser" {
 
 variable "dbpassword" {
   sensitive = true
-  type = string
+  type      = string
 }
 
 variable "dbport" {
