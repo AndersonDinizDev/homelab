@@ -622,6 +622,26 @@ locals {
                 ]
                 env = [
                   {
+                    name  = "DBHOST"
+                    value = var.dbhost
+                  },
+                  {
+                    name  = "DBUSER"
+                    value = var.dbuser
+                  },
+                  {
+                    name  = "DBNAME"
+                    value = var.dbname
+                  },
+                  {
+                    name  = "DBPASSWORD"
+                    value = var.dbpassword
+                  },
+                  {
+                    name  = "DBPORT"
+                    value = var.dbport
+                  },
+                  {
                     name  = "SERVER_PORT"
                     value = "8662"
                   }
@@ -635,21 +655,6 @@ locals {
                     cpu    = "250m"
                     memory = "128Mi"
                   }
-                }
-                volumeMounts = [
-                  {
-                    name      = "nt-storage-3"
-                    mountPath = "/app/internal/database/data/data_1.db"
-                    subPath   = "docker/databases/data_1.db"
-                  }
-                ]
-              }
-            ]
-            volumes = [
-              {
-                name = "nt-storage-3"
-                persistentVolumeClaim = {
-                  claimName = "nt-storage-3"
                 }
               }
             ]
@@ -697,7 +702,7 @@ locals {
                 env = [
                   {
                     name  = "POSTGRES_PASSWORD"
-                    value = var.postgres_password
+                    value = var.postgres_root_password
                   }
                 ]
                 resources = {
