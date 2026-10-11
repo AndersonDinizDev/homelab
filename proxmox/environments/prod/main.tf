@@ -35,6 +35,7 @@ module "proxmox_lxc" {
   vm_id             = each.value.vm_id
   unprivileged      = each.value.unprivileged
   disk              = each.value.disk
+  mount_point       = try(each.value.mount_point, [])
   features          = try(each.value.features, null)
   initialization    = try(each.value.initialization, {})
   cpu               = try(each.value.cpu, null)

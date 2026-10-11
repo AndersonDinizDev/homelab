@@ -25,6 +25,14 @@ locals {
         size         = 30
         datastore_id = "local-lvm"
       }
+      mount_point = [
+        {
+          path   = "/mnt/nt-storage"
+          volume = "nt-storage-pve:100/vm-100-disk-0.raw"
+          size   = "100G"
+          backup = true
+        }
+      ]
       operating_system = {
         template_file_id = "local:vztmpl/debian-12-standard_12.12-1_amd64.tar.zst"
         type             = "debian"

@@ -64,6 +64,22 @@ resource "proxmox_virtual_environment_container" "this" {
     }
   }
 
+  dynamic "mount_point" {
+    for_each = var.mount_point != null ? var.mount_point : []
+    content {
+      path          = mount_point.value.path
+      volume        = mount_point.value.volume
+      size          = try(mount_point.value.size, null)
+      acl           = try(mount_point.value.acl, null)
+      backup        = try(mount_point.value.backup, null)
+      mount_options = try(mount_point.value.mount_options, null)
+      quota         = try(mount_point.value.quota, null)
+      read_only     = try(mount_point.value.read_only, null)
+      replicate     = try(mount_point.value.replicate, null)
+      shared        = try(mount_point.value.shared, null)
+    }
+  }
+
 
   dynamic "operating_system" {
     for_each = [var.operating_system]

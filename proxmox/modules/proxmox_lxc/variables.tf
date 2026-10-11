@@ -66,6 +66,25 @@ variable "disk" {
   })
 }
 
+variable "mount_point" {
+  description = "Configuração de pontos de montagem"
+
+  default = []
+
+  type = list(object({
+    path          = string
+    volume        = string
+    size          = optional(string)
+    acl           = optional(bool)
+    backup        = optional(bool)
+    mount_options = optional(list(string))
+    quota         = optional(bool)
+    read_only     = optional(bool)
+    replicate     = optional(bool)
+    shared        = optional(bool)
+  }))
+}
+
 variable "operating_system" {
   description = "Configuração do sistema operacional"
 
