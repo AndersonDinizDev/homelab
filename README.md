@@ -1,4 +1,4 @@
-# Infraestrutura de Homelab
+# Infraestrutura Homelab
 
 [![Terraform](https://img.shields.io/badge/Terraform-1.5%2B-844FBA?style=flat&logo=terraform&logoColor=white)](https://www.terraform.io/)
 [![Proxmox VE](https://img.shields.io/badge/Proxmox_VE-8.x-E57000?style=flat&logo=proxmox&logoColor=white)](https://www.proxmox.com/)
@@ -7,7 +7,7 @@
 [![Debian](https://img.shields.io/badge/Debian-12%20%2F%2013-D70A53?style=flat&logo=debian&logoColor=white)](https://www.debian.org/)
 [![Traefik](https://img.shields.io/badge/Traefik-Ingress-24A1C1?style=flat&logo=traefikproxy&logoColor=white)](https://traefik.io/)
 
-Repositório responsável pelo gerenciamento e provisionamento automatizado da infraestrutura de Homelab utilizando Terraform como solução de Infraestrutura como Código (IaC). A arquitetura é estruturada em duas camadas principais: a camada de virtualização, rede e segurança no Proxmox VE e a camada de orquestração de microsserviços no cluster Kubernetes (K3s).
+Repositório responsável pelo gerenciamento e provisionamento automatizado da infraestrutura do meu Homelab, utilizando Terraform como solução de Infraestrutura como Código (IaC). A arquitetura é estruturada em duas camadas principais: a camada de virtualização, rede e segurança no Proxmox VE e a camada de orquestração de microsserviços no cluster Kubernetes (K3s).
 
 ---
 
