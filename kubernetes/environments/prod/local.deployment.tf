@@ -736,5 +736,73 @@ locals {
         }
       }
     }
+    10 = {
+      metadata = {
+        name      = "seerr-deployment"
+        namespace = "media-center"
+        labels = {
+          app = "seerr"
+        }
+      }
+      spec = {
+        replicas = 1
+        selector = {
+          matchLabels = {
+            app = "seerr"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "seerr"
+            }
+          }
+          spec = {
+            securityContext = {
+              runAsUser  = 1000
+              runAsGroup = 1000
+              fsGroup    = 1000
+            }
+            containers = [
+              {
+                name  = "seerr"
+                image = "seerr/seerr:latest"
+                ports = [
+                  {
+                    containerPort = 5055
+                    name          = "http"
+                  }
+                ]
+                resources = {
+                  limits = {
+                    cpu    = "0.5"
+                    memory = "1Gi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "256Mi"
+                  }
+                }
+                volumeMounts = [
+                  {
+                    name      = "nt-storage"
+                    mountPath = "/app/config"
+                    subPath   = "sr-config"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
   }
 }

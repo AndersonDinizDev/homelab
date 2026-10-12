@@ -183,5 +183,24 @@ locals {
         ]
       }
     }
+    10 = {
+      metadata = {
+        name      = "seerr-service"
+        namespace = "media-center"
+      }
+      spec = {
+        selector = {
+          app = "seerr"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8534
+            targetPort = 5055
+            name       = "http"
+          }
+        ]
+      }
+    }
   }
 }

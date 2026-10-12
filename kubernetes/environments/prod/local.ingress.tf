@@ -103,6 +103,25 @@ locals {
                 }
               ]
             }
+          },
+          {
+            host = "seerr.andersondiniz.com"
+            http = {
+              path = [
+                {
+                  path     = "/"
+                  pathType = "Prefix"
+                  backend = {
+                    service = {
+                      name = "seerr-service"
+                      port = {
+                        name = "http"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         ]
       }
