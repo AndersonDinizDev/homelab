@@ -141,6 +141,7 @@ Gerenciada via Terraform através do provedor `hashicorp/kubernetes`.
 | `media-center` | **qBittorrent** | `linuxserver/qbittorrent` | Cliente de download e distribuição de arquivos BitTorrent |
 | `media-center` | **Radarr** | `linuxserver/radarr` | Gerenciador e automatizador de downloads de filmes |
 | `media-center` | **Sonarr** | `linuxserver/sonarr` | Gerenciador e automatizador de downloads de séries |
+| `media-center` | **Seerr** | `seerr/seerr` | Gerenciador unificado de descoberta e solicitação de mídia |
 | `media-center` | **Prowlarr** | `linuxserver/prowlarr` | Gerenciador integrado de indexadores e integração com Radarr/Sonarr |
 | `work-center` | **Vaultwarden** | `vaultwarden/server` | Gerenciador de senhas e credenciais compatível com Bitwarden |
 | `work-center` | **Trilium Notes** | `zadam/trilium` | Base de conhecimento pessoal e anotações estruturadas |
@@ -164,6 +165,7 @@ As aplicações são publicadas externamente através de regras de Ingress geren
 | `radarr.andersondiniz.com` | `radarr-service:7878` | `media-center` |
 | `prowlarr.andersondiniz.com` | `prowlarr-service:9696` | `media-center` |
 | `sonarr.andersondiniz.com` | `sonarr-service:8989` | `media-center` |
+| `seerr.andersondiniz.com` | `seerr-service:5055` | `media-center` |
 | `vault.andersondiniz.com` | `vaultwarden-service:80` | `work-center` |
 | `notes.andersondiniz.com` | `triliumnotes-service:8080` | `work-center` |
 
