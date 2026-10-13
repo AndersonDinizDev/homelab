@@ -122,8 +122,8 @@ locals {
                 image = "lscr.io/linuxserver/qbittorrent:latest"
                 resources = {
                   limits = {
-                    cpu    = "1"
-                    memory = "1Gi"
+                    cpu    = "2"
+                    memory = "2Gi"
                   }
                   requests = {
                     cpu    = "250m"
