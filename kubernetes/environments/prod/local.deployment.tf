@@ -804,5 +804,73 @@ locals {
         }
       }
     }
+    11 = {
+      metadata = {
+        name      = "gotify-deployment"
+        namespace = "backend-center"
+        labels = {
+          app = "gotify"
+        }
+      }
+      spec = {
+        replicas = 1
+        selector = {
+          matchLabels = {
+            app = "gotify"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "gotify"
+            }
+          }
+          spec = {
+            securityContext = {
+              runAsUser  = 1000
+              runAsGroup = 1000
+              fsGroup    = 1000
+            }
+            containers = [
+              {
+                name  = "gotify"
+                image = "gotify/server:latest"
+                ports = [
+                  {
+                    containerPort = 80
+                    name          = "http"
+                  }
+                ]
+                resources = {
+                  limits = {
+                    cpu    = "0.5"
+                    memory = "256Mi"
+                  }
+                  requests = {
+                    cpu    = "250m"
+                    memory = "128Mi"
+                  }
+                }
+                volumeMounts = [
+                  {
+                    name      = "nt-storage-3"
+                    mountPath = "/app/data"
+                    subPath   = "gt-config"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage-3"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage-3"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
   }
 }

@@ -177,5 +177,37 @@ locals {
         ]
       }
     }
+    3 = {
+      wait_for_load_balancer = false
+      metadata = {
+        name      = "backend-center-ingress"
+        namespace = "backend-center"
+      }
+
+      spec = {
+        ingressClassName = "traefik"
+        rule = [
+          {
+            host = "message.andersondiniz.com"
+            http = {
+              path = [
+                {
+                  path     = "/"
+                  pathType = "Prefix"
+                  backend = {
+                    service = {
+                      name = "gotify-service"
+                      port = {
+                        name = "http"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
   }
 }

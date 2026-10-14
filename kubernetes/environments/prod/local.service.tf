@@ -202,5 +202,24 @@ locals {
         ]
       }
     }
+    11 = {
+      metadata = {
+        name      = "gotify-service"
+        namespace = "backend-center"
+      }
+      spec = {
+        selector = {
+          app = "gotify"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8831
+            targetPort = 80
+            name       = "http"
+          }
+        ]
+      }
+    }
   }
 }
