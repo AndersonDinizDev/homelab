@@ -16,6 +16,15 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   tags = var.tags
 
+  dynamic "startup" {
+    for_each = var.startup != null ? [var.startup] : []
+    content {
+      order = var.startup.order
+      up_delay = var.startup.upDelay
+      down_delay = var.startup.downDelay
+    }
+  }
+
   dynamic "agent" {
     for_each = var.agent != null ? [var.agent] : []
     content {

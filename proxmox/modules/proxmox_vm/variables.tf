@@ -131,5 +131,12 @@ variable "img" {
   })
 }
 
+variable "startup" {
+  type = object({
+    order = optional(string)
+    upDelay = optional(string)
+    downDelay = optional(string)
+  })
+}
 
 

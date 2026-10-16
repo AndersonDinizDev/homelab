@@ -30,7 +30,7 @@ locals {
           path   = "/mnt/nt-storage"
           volume = "nt-storage-pve:100/vm-100-disk-0.raw"
           size   = "100G"
-          backup = true
+          backup = false
         }
       ]
       operating_system = {

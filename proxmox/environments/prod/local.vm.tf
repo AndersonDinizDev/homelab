@@ -22,6 +22,11 @@ locals {
           keys     = trimspace(data.local_file.ssh_public_key.content)
         }
       }
+      startup = {
+        order     = "-1"
+        upDelay   = "-1"
+        downDelay = "60"
+      }
       cpu = {
         cores = 2
       }
@@ -69,6 +74,11 @@ locals {
           password = var.user_password
           keys     = trimspace(data.local_file.ssh_public_key.content)
         }
+      }
+      startup = {
+        order     = "-1"
+        upDelay   = "-1"
+        downDelay = "60"
       }
       cpu = {
         cores = 2

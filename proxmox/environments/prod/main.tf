@@ -59,6 +59,7 @@ module "proxmox_vm" {
   stop_on_destroy  = each.value.stop_on_destroy
   cpu              = try(each.value.cpu, null)
   initialization   = try(each.value.initialization, {})
+  startup          = try(each.value.startup, null)
   memory           = try(each.value.memory, null)
   operating_system = each.value.operating_system
   network_device   = try(each.value.network_interface, null)
