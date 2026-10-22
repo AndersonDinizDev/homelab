@@ -618,7 +618,7 @@ locals {
             containers = [
               {
                 name  = "postgresql"
-                image = "postgres:18.6"
+                image = "pgvector/pgvector:pg18"
                 ports = [
                   {
                     containerPort = 5432
@@ -791,6 +791,131 @@ locals {
                 name = "nt-storage-3"
                 persistentVolumeClaim = {
                   claimName = "nt-storage-3"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+    12 = {
+      metadata = {
+        name      = "n8n-deployment"
+        namespace = "work-center"
+        labels = {
+          app = "n8n"
+        }
+      }
+      spec = {
+        replicas = 1
+        strategy = {
+          type = "Recreate"
+        }
+        selector = {
+          matchLabels = {
+            app = "n8n"
+          }
+        }
+        template = {
+          metadata = {
+            labels = {
+              app = "n8n"
+            }
+          }
+          spec = {
+            securityContext = {
+              runAsUser  = 1000
+              runAsGroup = 1000
+              fsGroup    = 1000
+            }
+            containers = [
+              {
+                name  = "n8n"
+                image = "n8nio/n8n:latest"
+                ports = [
+                  {
+                    containerPort = 5678
+                    name          = "http"
+                  }
+                ]
+                env = [
+                  {
+                    name  = "WEBHOOK_URL"
+                    value = "https://n8n.andersondiniz.com"
+                  },
+                  {
+                    name  = "N8N_PROTOCOL"
+                    value = "https"
+                  },
+                  {
+                    name  = "N8N_HOST"
+                    value = "n8n.andersondiniz.com"
+                  },
+                  {
+                    name  = "N8N_DIAGNOSTICS_ENABLED"
+                    value = false
+                  },
+                  {
+                    name  = "N8N_PERSONALIZATION_ENABLED"
+                    value = false
+                  },
+                  {
+                    name  = "N8N_VERSION_NOTIFICATIONS_ENABLED"
+                    value = false
+                  },
+                  {
+                    name  = "DB_TYPE"
+                    value = "postgresdb"
+                  },
+                  {
+                    name  = "DB_POSTGRESDB_HOST"
+                    value = "postgresql-service.backend-center"
+                  },
+                  {
+                    name  = "DB_POSTGRESDB_PORT"
+                    value = 5432
+                  },
+                  {
+                    name  = "DB_POSTGRESDB_DATABASE"
+                    value = "homelab"
+                  },
+                  {
+                    name  = "DB_POSTGRESDB_SCHEMA"
+                    value = "n8n"
+                  },
+                  {
+                    name  = "DB_POSTGRESDB_USER"
+                    value = var.postgres_n8n_user
+                  },
+                  {
+                    name  = "DB_POSTGRESDB_PASSWORD"
+                    value = var.postgres_n8n_password
+                  }
+                ]
+                resources = {
+                  limits = {
+                    cpu    = "2"
+                    memory = "2Gi"
+                  }
+                  requests = {
+                    cpu    = "0.5"
+                    memory = "512Mi"
+                  }
+                }
+                volumeMounts = [
+                  {
+                    name      = "nt-storage-2"
+                    mountPath = "/home/node/.n8n"
+                    subPath   = "n8n-config"
+                  }
+                ]
+              }
+            ]
+            volumes = [
+              {
+                name = "nt-storage-2"
+                persistentVolumeClaim = {
+                  claimName = "nt-storage-2"
                 }
               }
             ]

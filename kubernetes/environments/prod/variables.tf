@@ -3,23 +3,11 @@ variable "postgres_root_password" {
   type      = string
 }
 
-variable "dbhost" {
+variable "postgres_n8n_user" {
   type = string
 }
 
-variable "dbname" {
-  type = string
-}
-
-variable "dbuser" {
-  type = string
-}
-
-variable "dbpassword" {
-  sensitive = true
+variable "postgres_n8n_password" {
   type      = string
-}
-
-variable "dbport" {
-  type = string
+  sensitive = true
 }

@@ -173,6 +173,25 @@ locals {
                 }
               ]
             }
+          },
+          {
+            host = "n8n.andersondiniz.com"
+            http = {
+              path = [
+                {
+                  path     = "/"
+                  pathType = "Prefix"
+                  backend = {
+                    service = {
+                      name = "n8n-service"
+                      port = {
+                        name = "http"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
           }
         ]
       }

@@ -202,5 +202,24 @@ locals {
         ]
       }
     }
+    12 = {
+      metadata = {
+        name      = "n8n-service"
+        namespace = "work-center"
+      }
+      spec = {
+        selector = {
+          app = "n8n"
+        }
+        ports = [
+          {
+            protocol   = "TCP"
+            port       = 8532
+            targetPort = 5678
+            name       = "http"
+          }
+        ]
+      }
+    }
   }
 }
