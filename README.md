@@ -3,7 +3,7 @@
 [![Terraform](https://img.shields.io/badge/Terraform-1.5%2B-844FBA?style=flat&logo=terraform&logoColor=white)](https://www.terraform.io/)
 [![Proxmox VE](https://img.shields.io/badge/Proxmox_VE-8.x-E57000?style=flat&logo=proxmox&logoColor=white)](https://www.proxmox.com/)
 [![K3s](https://img.shields.io/badge/Kubernetes-K3s-FFC61C?style=flat&logo=k3s&logoColor=black)](https://k3s.io/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-4169E1?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Debian](https://img.shields.io/badge/Debian-12%20%2F%2013-D70A53?style=flat&logo=debian&logoColor=white)](https://www.debian.org/)
 [![Traefik](https://img.shields.io/badge/Traefik-Ingress-24A1C1?style=flat&logo=traefikproxy&logoColor=white)](https://traefik.io/)
 
@@ -19,6 +19,7 @@ Repositório responsável pelo gerenciamento e provisionamento automatizado da i
   - [Topologia de Nós e Máquinas Virtuais](#topologia-de-nós-e-máquinas-virtuais)
   - [Containers LXC](#containers-lxc)
   - [Segurança e Firewall](#segurança-e-firewall)
+  - [Endereçamento da Rede](#endereçamento-da-rede)
 - [Camada de Aplicações (Kubernetes / K3s)](#camada-de-aplicações-kubernetes--k3s)
   - [Divisão de Namespaces e Serviços](#divisão-de-namespaces-e-serviços)
   - [Armazenamento Persistente (NFS)](#armazenamento-persistente-nfs)
@@ -58,6 +59,8 @@ O projeto segue o padrão modular do Terraform, separando definições de módul
 ├── kubernetes/
 │   ├── environments/
 │   │   └── prod/
+│   │       ├── .kube/
+│   │       │   └── k3s-config.yaml
 │   │       ├── local.deployment.tf
 │   │       ├── local.ingress.tf
 │   │       ├── local.namespace.tf
@@ -66,6 +69,7 @@ O projeto segue o padrão modular do Terraform, separando definições de módul
 │   │       ├── local.service.tf
 │   │       ├── main.tf
 │   │       ├── output.tf
+│   │       ├── terraform.tfvars
 │   │       └── variables.tf
 │   └── modules/
 │       ├── deployment/
@@ -85,6 +89,7 @@ O projeto segue o padrão modular do Terraform, separando definições de módul
 │   │       ├── local.firewall.security.group.tf
 │   │       ├── local.vm.tf
 │   │       ├── main.tf
+│   │       ├── terraform.tfvars
 │   │       └── variables.tf
 │   └── modules/
 │       ├── firewall_alias/
@@ -105,16 +110,18 @@ Gerenciada via Terraform através do provedor oficial `bpg/proxmox`.
 
 ### Topologia de Nós e Máquinas Virtuais
 
-| ID da VM | Nome do Host | Nó Proxmox | vCPU | Memória RAM | Disco | Sistema Operacional | Função / Papel |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `102` | `k3s-master` | `pve1` | 2 núcleos | 4 GB | 32 GB (SCSI) | Debian 13 (Cloud-Init) | Nó Control Plane (Master) do K3s |
-| `103` | `k3s-worker-1` | `pve2` | 2 núcleos | 4 GB | 32 GB (SCSI) | Debian 13 (Cloud-Init) | Nó de Execução de Cargas (Worker) do K3s |
+| ID da VM | Nome do Host | Nó Proxmox | Endereço IP | vCPU | Memória RAM | Disco | Sistema Operacional | Função / Papel |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `102` | `k3s-master` | `pve1` | `192.168.100.13` | 2 núcleos | 4 GB | 32 GB (SCSI) | Debian 13 (Cloud-Init) | Nó Control Plane (Master) do K3s |
+| `103` | `k3s-worker-1` | `pve2` | `192.168.100.33` | 2 núcleos | 4 GB | 32 GB (SCSI) | Debian 13 (Cloud-Init) | Nó de Execução de Cargas (Worker) do K3s |
 
 ### Containers LXC
 
-| ID do CT | Nome do Host | Nó Proxmox | Memória RAM | Disco | Template Base | Modo de Isolamento | Função / Papel |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `100` | `container-registry` | `pve2` | 2 GB | 30 GB | Debian 12 Padrão | Não privilegiado (Nesting ativo) | Registro local de imagens de containers |
+| ID do CT | Nome do Host | Nó Proxmox | Endereço IP | Memória RAM | Disco | Template Base | Modo de Isolamento | Função / Papel |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `100` | `container-registry` | `pve2` | `192.168.100.34` | 2 GB | 30 GB + 100 GB (mount OCI) | Debian 12 Padrão | Não privilegiado (Nesting ativo) | Registro local de imagens de containers, exposto na porta TCP `5000` apenas para o proxy reverso |
+
+O container `100` monta o volume `nt-storage-pve:100/vm-100-disk-0.raw` em `/mnt/nt-storage` para armazenar as camadas das imagens, ficando fora do backup padrão do Proxmox.
 
 ### Segurança e Firewall
 
@@ -123,9 +130,24 @@ A infraestrutura adota o princípio de menor privilégio com filtragem de pacote
 - **IPSets**: Agrupamento dinâmico de nós do cluster (`cluster_nodes`) e nós de trabalho (`workers_nodes`).
 - **Grupos de Segurança**:
   - `default-sg`: Libera acesso administrativo via SSH (porta 22) restrito a endereços IPs confiáveis.
-  - `k3s-sg-master`: Permite tráfego HTTP a partir do proxy reverso, comunicação com o worker e porta da API do Kubernetes (porta 6443).
-  - `k3s-sg-worker`: Permite tráfego HTTP a partir do proxy, comunicação com o nó master e portas para transferências P2P/BitTorrent (TCP/UDP 6881).
-- **Regras Globais e Políticas de Entrada**: Política padrão de entrada `DROP` com liberações explícitas para tráfego NFS (porta 2049), API Proxmox (porta 8006), Kubernetes API (porta 6443) e tráfego interno do cluster.
+  - `k3s-sg-master`: Permite a comunicação de entrada vinda do proxy reverso e do nó worker para o Control Plane.
+  - `k3s-sg-worker`: Permite a comunicação de entrada vinda do proxy reverso e do nó master, além das portas de transferências P2P/BitTorrent (TCP/UDP 6881).
+- **Regras Globais e Políticas de Entrada**: Política padrão de entrada `DROP` com liberações explícitas para tráfego NFS (porta 2049 TCP/UDP), API Proxmox (porta 8006, liberada para o proxy reverso), Kubernetes API (porta 6443, liberada apenas para o notebook de administração), registro de containers (porta 5000, liberada para o proxy reverso) e tráfego interno do cluster.
+
+### Endereçamento da Rede
+
+Todos os endereços são gerenciados como aliases de firewall no Terraform, evitando IPs soltos nas regras:
+
+| Alias | Endereço | Papel |
+| :--- | :--- | :--- |
+| `gateway` | `192.168.100.1` | Gateway da rede e host do proxy reverso (Caddy) |
+| `pve_1` | `192.168.100.11` | Nó Proxmox principal, servidor NFS e endpoint da API |
+| `pve_2` | `192.168.100.31` | Nó Proxmox secundário e host do registro de containers |
+| `k3s_master` | `192.168.100.13` | VM `k3s-master` (Control Plane) |
+| `k3s_worker_1` | `192.168.100.33` | VM `k3s-worker-1` (Worker) |
+| `container_registry` | `192.168.100.34` | LXC com o registro local de imagens |
+| `my_notebook` | `192.168.100.101` | Estação de administração (SSH e `kubectl`) |
+| `my_phone` | `192.168.100.102` | Dispositivo móvel |
 
 ---
 
@@ -144,13 +166,21 @@ Gerenciada via Terraform através do provedor `hashicorp/kubernetes`.
 | `media-center` | **Seerr** | `seerr/seerr` | Gerenciador unificado de descoberta e solicitação de mídia |
 | `media-center` | **Prowlarr** | `linuxserver/prowlarr` | Gerenciador integrado de indexadores e integração com Radarr/Sonarr |
 | `work-center` | **Vaultwarden** | `vaultwarden/server` | Gerenciador de senhas e credenciais compatível com Bitwarden |
-| `work-center` | **Trilium Notes** | `zadam/trilium` | Base de conhecimento pessoal e anotações estruturadas |
-| `backend-center` | **Custom Indexers** | Imagem customizada | Serviço backend para indexadores customizados |
-| `backend-center` | **PostgreSQL** | `postgres:17` | Banco de dados relacional para persistência de dados das aplicações |
+| `work-center` | **Trilium Notes** | `triliumnext/trilium` | Base de conhecimento pessoal e anotações estruturadas |
+| `work-center` | **n8n** | `n8nio/n8n:latest` | Plataforma de automação de workflows e integrações |
+| `backend-center` | **PostgreSQL** | `pgvector/pgvector:pg18` | Banco de dados relacional (com extensão `pgvector`), base `homelab`; o n8n usa o schema dedicado `n8n` |
+| `backend-center` | **Gotify** | `gotify/server:latest` | Servidor de notificações push para alertas da infraestrutura |
 
 ### Armazenamento Persistente (NFS)
 
-O cluster utiliza Persistent Volumes (PV) e Persistent Volume Claims (PVC) integrados ao servidor NFS no nó `pve1` (`192.168.100.11:/storage-pve/proxmox`):
+O cluster utiliza Persistent Volumes (PV) e Persistent Volume Claims (PVC) integrados ao mesmo export NFS do nó `pve1` (`192.168.100.11:/storage-pve/proxmox`), com um conjunto de volumes por namespace:
+
+| Persistent Volume | Capacidade | PVC (namespace) | Capacidade solicitada | Uso |
+| :--- | :--- | :--- | :--- | :--- |
+| `nt-storage` | 500 Gi | `nt-storage` (`media-center`) | 100 Gi | Configurações e biblioteca do Jellyfin, qBittorrent, Radarr, Sonarr, Prowlarr e Seerr |
+| `nt-storage-2` | 100 Gi | `nt-storage-2` (`work-center`) | 50 Gi | Vaultwarden, Trilium e n8n |
+| `nt-storage-3` | 100 Gi | `nt-storage-3` (`backend-center`) | 50 Gi | PostgreSQL e Gotify |
+
 - **Modo de Acesso**: `ReadWriteMany` (RWX), possibilitando que múltiplos pods em diferentes nós leiam e gravem no mesmo volume simultaneamente.
 - **Isolamento de Diretórios**: Utilização de `subPath` para segregação de arquivos de configuração (`/config`) e bibliotecas de dados (`/data`).
 
@@ -158,16 +188,20 @@ O cluster utiliza Persistent Volumes (PV) e Persistent Volume Claims (PVC) integ
 
 As aplicações são publicadas externamente através de regras de Ingress gerenciadas pelo Traefik com suporte a domínios personalizados:
 
-| Domínio de Acesso | Serviço de Destino | Namespace |
-| :--- | :--- | :--- |
-| `streaming.andersondiniz.com` | `jellyfin-service:8096` | `media-center` |
-| `qbittorrent.andersondiniz.com` | `qbittorrent-service:8080` | `media-center` |
-| `radarr.andersondiniz.com` | `radarr-service:7878` | `media-center` |
-| `prowlarr.andersondiniz.com` | `prowlarr-service:9696` | `media-center` |
-| `sonarr.andersondiniz.com` | `sonarr-service:8989` | `media-center` |
-| `seerr.andersondiniz.com` | `seerr-service:5055` | `media-center` |
-| `vault.andersondiniz.com` | `vaultwarden-service:80` | `work-center` |
-| `notes.andersondiniz.com` | `triliumnotes-service:8080` | `work-center` |
+| Domínio de Acesso | Serviço de Destino (porta do Service) | Porta do container | Namespace |
+| :--- | :--- | :--- | :--- |
+| `streaming.andersondiniz.com` | `jellyfin-service:8096` | `8096` | `media-center` |
+| `qbittorrent.andersondiniz.com` | `qbittorrent-service:8080` | `8080` | `media-center` |
+| `radarr.andersondiniz.com` | `radarr-service:7878` | `7878` | `media-center` |
+| `prowlarr.andersondiniz.com` | `prowlarr-service:9696` | `9696` | `media-center` |
+| `sonarr.andersondiniz.com` | `sonarr-service:8989` | `8989` | `media-center` |
+| `seerr.andersondiniz.com` | `seerr-service:8534` | `5055` | `media-center` |
+| `vault.andersondiniz.com` | `vaultwarden-service:8972` | `80` | `work-center` |
+| `notes.andersondiniz.com` | `triliumnotes-service:8862` | `8080` | `work-center` |
+| `n8n.andersondiniz.com` | `n8n-service:8532` | `5678` | `work-center` |
+| `message.andersondiniz.com` | `gotify-service:8831` | `80` | `backend-center` |
+
+Os Services usam portas próprias (por exemplo `8972` para o Vaultwarden e `8532` para o n8n) apenas para evitar conflito entre namespaces; quem escuta dentro do container continua sendo a porta nativa da aplicação. O acesso externo passa primeiro pelo proxy reverso (Caddy) no gateway e chega ao Ingress Controller Traefik (`ingressClassName: traefik`).
 
 ---
 
@@ -176,6 +210,8 @@ As aplicações são publicadas externamente através de regras de Ingress geren
 O estado das execuções do Terraform (`tfstate`) é mantido em armazenamento remoto e seguro no Amazon S3 com criptografia e trava de concorrência:
 - **Bucket**: `homelab-259553642804-us-east-1-an`
 - **Região**: `us-east-1`
+- **Criptografia**: `encrypt = true` no bloco de backend
+- **Trava de Concorrência**: `use_lockfile = true`, que usa o lock nativo do S3 (dispensa tabela DynamoDB)
 - **Caminho das Chaves de Estado**:
   - Infraestrutura Proxmox: `infra/prod/terraform.tfstate`
   - Aplicações Kubernetes: `kubernetes/prod/terraform.tfstate`
@@ -195,6 +231,11 @@ Para executar e gerenciar a infraestrutura, certifique-se de possuir:
    - Token de API com permissões adequadas no Proxmox VE.
    - Par de chaves SSH para injeção via Cloud-Init nas VMs e LXC.
    - Arquivo de configuração de acesso ao K3s posicionado em `kubernetes/environments/prod/.kube/k3s-config.yaml`.
+
+3. **Provedores do Terraform** (versões fixadas no `.terraform.lock.hcl`):
+   - `bpg/proxmox` `0.111.0`
+   - `hashicorp/kubernetes` `3.0.1`
+   - `hashicorp/local` `2.9.0`
 
 ---
 
@@ -233,16 +274,15 @@ Com as VMs do cluster K3s ativas e o arquivo de autenticação posicionado em `k
 cd ../../../kubernetes/environments/prod
 ```
 
-Configure o arquivo `terraform.tfvars` com os parâmetros do banco de dados e credenciais:
+Configure o arquivo `terraform.tfvars` com os parâmetros do banco de dados e as credenciais do usuário dedicado do n8n:
 
 ```hcl
-postgres_root_password = "senha-postgres-root"
-dbhost                 = "postgresql-service"
-dbname                 = "appdb"
-dbuser                 = "dbuser"
-dbpassword             = "senha-db-user"
-dbport                 = "5432"
+postgres_root_password  = "senha-postgres-root"
+postgres_n8n_user       = "n8n"
+postgres_n8n_password   = "senha-do-usuario-n8n"
 ```
+
+O n8n se conecta ao Service `postgresql-service.backend-center` na porta `5432`, usando a base `homelab` e o schema `n8n`.
 
 Inicialize o backend remoto e provisione as aplicações no cluster:
 
